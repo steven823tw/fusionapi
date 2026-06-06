@@ -1,0 +1,1520 @@
+openapi: 3.0.3
+info:
+  title: FusionCompute 弹性伸缩 API
+  version: 8.8.0+8.9.0
+  description: FusionCompute Auto Scaling Service REST API (8.8.0 + 8.9.0 — verified identical, merged)
+servers:
+- url: https://{hostname}:{port}
+  variables:
+    hostname:
+      default: vrm.example.com
+      description: FusionCompute VRM 主机 IP
+    port:
+      default: '8443'
+      description: HTTPS 端口
+tags:
+- name: 弹性伸缩服务
+  description: 弹性伸缩服务 相关接口
+paths:
+  /rest/as/configuration/v1/{project_id}/scaling-configuration/{scaling_configuration_id}:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询弹性伸缩配置详情
+      description: '[8.9.0] 查询弹性伸缩配置详情'
+      operationId: getRestAsConfigurationProject_idScalingConfigurationScaling_configuration_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_configuration_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_configuration_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/configuration/v1/{project_id}/scaling-configuration:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询弹性伸缩配置列表
+      description: '[8.9.0] 查询弹性伸缩配置列表'
+      operationId: getRestAsConfigurationProject_idScalingConfiguration
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩配置名称 最小长度:0 最大长度:255 正则约束:^[\u4e00-\u9fa5a-zA-Z0-9_-]+$
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩配置id 最小长度:1 最大长度:36 正则约束:^[A-Za-z0-9-]+$
+      - name: page_no
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页数 默认值:1 最小数值:1 最大数值:2147483647
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页大小 默认值:10 最小数值:1 最大数值:2147483647
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 创建弹性伸缩配置
+      description: '[8.9.0] 创建弹性伸缩配置'
+      operationId: postRestAsConfigurationProject_idScalingConfiguration
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/configuration/v1/{project_id}/scaling-configurations/delete:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 批量删除弹性伸缩配置
+      description: '[8.9.0] 批量删除弹性伸缩配置'
+      operationId: postRestAsConfigurationProject_idScalingConfigurationsDelete
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/group/v1/{project_id}/scaling-group/{scaling_group_id}/action:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 启用或停止弹性伸缩组
+      description: '[8.9.0] 启用或停止弹性伸缩组'
+      operationId: postRestAsGroupProject_idScalingGroupScaling_group_idAction
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/group/v1/{project_id}/scaling-group/{scaling_group_id}/configuration:
+    put:
+      tags:
+      - 弹性伸缩服务
+      summary: 修改弹性伸缩组的伸缩配置
+      description: '[8.9.0] 修改弹性伸缩组的伸缩配置'
+      operationId: putRestAsGroupProject_idScalingGroupScaling_group_idConfiguration
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/group/v1/{project_id}/scaling-group/{scaling_group_id}:
+    delete:
+      tags:
+      - 弹性伸缩服务
+      summary: 删除弹性伸缩组
+      description: '[8.9.0] 删除弹性伸缩组'
+      operationId: deleteRestAsGroupProject_idScalingGroupScaling_group_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询弹性伸缩组详情
+      description: '[8.9.0] 查询弹性伸缩组详情'
+      operationId: getRestAsGroupProject_idScalingGroupScaling_group_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+    put:
+      tags:
+      - 弹性伸缩服务
+      summary: 修改弹性伸缩组
+      description: '[8.9.0] 修改弹性伸缩组'
+      operationId: putRestAsGroupProject_idScalingGroupScaling_group_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/group/v1/{project_id}/scaling-group:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询弹性伸缩组列表
+      description: '[8.9.0] 查询弹性伸缩组列表'
+      operationId: getRestAsGroupProject_idScalingGroup
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩组名称 最小长度:1 最大长度:64 正则约束:^[\u4E00-\u9FA5A-Za-z0-9-_.\x20]+$
+      - name: configuration_name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩配置名称 最小长度:1 最大长度:64 正则约束:^[\u4e00-\u9fa5a-zA-Z0-9_-]+$
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+        description: '伸缩组状态 枚举值: IN_SERVICE PAUSED 最大数量:2'
+      - name: page_no
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页数 默认值:1 最小数值:1 最大数值:300
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页大小 默认值:10 最小数值:1 最大数值:300
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 创建弹性伸缩组
+      description: '[8.9.0] 创建弹性伸缩组'
+      operationId: postRestAsGroupProject_idScalingGroup
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/instance/v1/{project_id}/scaling-group-instance/{scaling_group_id}/instance/{action_type}:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 添加实例/移除指定实例
+      description: '[8.9.0] 添加实例/移除指定实例'
+      operationId: postRestAsInstanceProject_idScalingGroupInstanceScaling_group_idInstanceAction_type
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      - name: action_type
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 action_type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                operationRequest:
+                  type: string
+                  description: 集群操作body
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:手动添加/移除实例成功
+  /rest/as/instance/v1/{project_id}/scaling-group-instance/{scaling_group_id}/instances:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询弹性伸缩组实例列表
+      description: '[8.9.0] 查询弹性伸缩组实例列表'
+      operationId: getRestAsInstanceProject_idScalingGroupInstanceScaling_group_idInstances
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: page_no
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页数 默认值:1 最小数值:1 最大数值:2147483647
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页大小，默认10 默认值:10 最小数值:1 最大数值:100
+      - name: instance_name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩实例名称 最小长度:1 最大长度:255 正则约束:^[\u4E00-\u9FA5A-Za-z0-9-_.\x20]+$
+      - name: instance_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩实例ID 最小长度:0 最大长度:64 正则约束:^[A-Za-z0-9-]+$
+      - name: life_cycle_state
+        in: query
+        required: false
+        schema:
+          type: array
+        description: '伸缩实例生命周期状态 枚举值: INIT ADDING REMOVING REPLACING ACTIVED 最小数量:0 最大数量:5'
+      - name: health_status
+        in: query
+        required: false
+        schema:
+          type: array
+        description: '伸缩实例健康状态 枚举值: INIT NORMAL ABNORMAL 最小数量:0 最大数量:3'
+      - name: sort_dir
+        in: query
+        required: false
+        schema:
+          type: string
+        description: desc
+      - name: sort_key
+        in: query
+        required: false
+        schema:
+          type: string
+        description: create_time
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/instance/v1/{project_id}/scaling-group-instance/{scaling_group_id}:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询弹性云服务器列表
+      description: '[8.9.0] 查询弹性云服务器列表'
+      operationId: getRestAsInstanceProject_idScalingGroupInstanceScaling_group_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩实例名称，可模糊匹配 最大长度:256
+      - name: page_no
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页数 默认值:1 最小数值:1 最大数值:2147483647
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页大小，默认10 默认值:10 最小数值:1 最大数值:100
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/monitor/v1/{project_id}/scaling-group/{scaling_group_id}/charts-data:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询伸缩组实例监控数据
+      description: '[8.9.0] 查询伸缩组实例监控数据'
+      operationId: postRestAsMonitorProject_idScalingGroupScaling_group_idChartsData
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/policy-monitor/v1/{project_id}/group/{scaling_group_id}/monitor/list:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查看伸缩组下监控配置列表
+      description: '[8.9.0] 查看伸缩组下监控配置列表'
+      operationId: getRestAsPolicyMonitorProject_idGroupScaling_group_idMonitorList
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: page_no
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页数 默认值:1 最小数值:1 最大数值:2147483647
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页大小 默认值:10 最小数值:1 最大数值:2147483647
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/policy-monitor/v1/{project_id}/monitor/delete:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 批量删除监控配置
+      description: '[8.9.0] 批量删除监控配置'
+      operationId: postRestAsPolicyMonitorProject_idMonitorDelete
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/policy-monitor/v1/{project_id}/monitor/{monitor_id}:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查看弹性伸缩策略监控详情
+      description: '[8.9.0] 查看弹性伸缩策略监控详情'
+      operationId: getRestAsPolicyMonitorProject_idMonitorMonitor_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: monitor_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 monitor_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+    put:
+      tags:
+      - 弹性伸缩服务
+      summary: 修改伸缩策略监控数据
+      description: '[8.9.0] 修改伸缩策略监控数据'
+      operationId: putRestAsPolicyMonitorProject_idMonitorMonitor_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: monitor_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 monitor_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/policy-monitor/v1/{project_id}/monitor:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 创建伸缩策略监控数据
+      description: '[8.9.0] 创建伸缩策略监控数据'
+      operationId: postRestAsPolicyMonitorProject_idMonitor
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/policy/v1/{project_id}/scaling-policy/{scaling_group_id}/list:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查看伸缩组下伸缩策略列表
+      description: '[8.9.0] 查看伸缩组下伸缩策略列表'
+      operationId: getRestAsPolicyProject_idScalingPolicyScaling_group_idList
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_group_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_group_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: scaling_policy_name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 伸缩策略名称 最小长度:1 最大长度:255 正则约束:^[\u4e00-\u9fa5a-zA-Z0-9_-]+$
+      - name: scaling_policy_type
+        in: query
+        required: false
+        schema:
+          type: array
+        description: '策略类型 枚举值: MONITOR SCHEDULED RECURRENCE 最小数量:0 最大数量:3'
+      - name: scaling_policy_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 策略id 最小长度:1 最大长度:36 正则约束:^[A-Za-z0-9-]+$
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+        description: 策略状态 最小长度:1 最大长度:20 最小数量:0 最大数量:2
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/policy/v1/{project_id}/scaling-policy/{scaling_policy_id}/action:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 执行启用或停止弹性伸缩策略
+      description: '[8.9.0] 执行启用或停止弹性伸缩策略'
+      operationId: postRestAsPolicyProject_idScalingPolicyScaling_policy_idAction
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_policy_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 伸缩策略操作请求
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/policy/v1/{project_id}/scaling-policy/{scaling_policy_id}:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查看弹性伸缩策略详情
+      description: '[8.9.0] 查看弹性伸缩策略详情'
+      operationId: getRestAsPolicyProject_idScalingPolicyScaling_policy_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_policy_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 删除弹性伸缩策略
+      description: '[8.9.0] 删除弹性伸缩策略'
+      operationId: postRestAsPolicyProject_idScalingPolicyScaling_policy_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_policy_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+    put:
+      tags:
+      - 弹性伸缩服务
+      summary: 修改弹性伸缩策略
+      description: '[8.9.0] 修改弹性伸缩策略'
+      operationId: putRestAsPolicyProject_idScalingPolicyScaling_policy_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: scaling_policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 scaling_policy_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /rest/as/policy/v1/{project_id}/scaling-policy:
+    post:
+      tags:
+      - 弹性伸缩服务
+      summary: 创建弹性伸缩策略
+      description: '[8.9.0] 创建弹性伸缩策略'
+      operationId: postRestAsPolicyProject_idScalingPolicy
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /rest/as/record/v1/{project_id}/scaling-records:
+    get:
+      tags:
+      - 弹性伸缩服务
+      summary: 查询伸缩活动
+      description: '[8.9.0] 查询伸缩活动'
+      operationId: getRestAsRecordProject_idScalingRecords
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: group_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 伸缩组id 最小长度:1 最大长度:36 正则约束:^[A-Za-z0-9-]+$
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+        description: '枚举值: FAIL SCALING SUCCESS 最小数量:0 最大数量:3'
+      - name: sort_key
+        in: query
+        required: false
+        schema:
+          type: string
+        description: end_time
+      - name: sort_dir
+        in: query
+        required: false
+        schema:
+          type: string
+        description: desc
+      - name: page_no
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页数 默认值:1 最小数值:1 最大数值:2147483647
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: 页大小 默认值:10 最小数值:1 最大数值:2147483647
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+components:
+  securitySchemes:
+    X-Auth-Token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token
+      description: 通过 /service/session 接口获取的 token

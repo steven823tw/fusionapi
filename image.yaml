@@ -1,0 +1,1606 @@
+openapi: 3.0.3
+info:
+  title: FusionCompute 镜像服务 API
+  version: 8.8.0 / 8.9.0 (split)
+  description: FusionCompute Image Service (Glance) REST API — 8.8.0 and 8.9.0 split as /v8.8.0/* and /v9.0.0/* to preserve
+    per-version params (8.9.0 added 1 endpoint, 15 endpoints have different query params)
+servers:
+- url: https://{hostname}:{port}
+  variables:
+    hostname:
+      default: vrm.example.com
+      description: FusionCompute VRM 主机 IP
+    port:
+      default: '8443'
+      description: HTTPS 端口
+tags:
+- name: 镜像服务
+  description: 镜像服务 相关接口
+paths:
+  /v8.8.0/rest/ims/image-file/v1/{project_id}/multipart-upload/{upload_id}/finish:
+    post:
+      tags:
+      - 镜像服务
+      summary: 完成分片上传
+      description: '[8.8.0] 完成分片上传'
+      operationId: postV8RestImsImageFileProject_idMultipartUploadUpload_idFinish
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 upload_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为202: 响应202检查成功'
+  /v8.8.0/rest/ims/image-file/v1/{project_id}/multipart-upload/{upload_id}/heartbeat:
+    post:
+      tags:
+      - 镜像服务
+      summary: 镜像上传心跳检测
+      description: '[8.8.0] 镜像上传心跳检测'
+      operationId: postV8RestImsImageFileProject_idMultipartUploadUpload_idHeartbeat
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 upload_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功，无响应体
+  /v8.8.0/rest/ims/image-file/v1/{project_id}/multipart-upload/{upload_id}:
+    post:
+      tags:
+      - 镜像服务
+      summary: 上传分片
+      description: '[8.8.0] 上传分片'
+      operationId: postV8RestImsImageFileProject_idMultipartUploadUpload_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 upload_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200检查成功'
+  /v8.8.0/rest/ims/image-file/v1/{project_id}/multipart-upload:
+    post:
+      tags:
+      - 镜像服务
+      summary: 开启分片上传
+      description: '[8.8.0] 开启分片上传'
+      operationId: postV8RestImsImageFileProject_idMultipartUpload
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200检查成功'
+  /v8.8.0/rest/ims/images/v1/{project_id}/delete:
+    post:
+      tags:
+      - 镜像服务
+      summary: 删除镜像
+      description: '[8.8.0] 删除镜像'
+      operationId: postV8RestImsImagesProject_idDelete
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                DeleteImageReq:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为202: 响应202代表请求成功'
+  /v8.8.0/rest/ims/images/v1/{project_id}/export/{image_id}/remote-export:
+    post:
+      tags:
+      - 镜像服务
+      summary: 租户远程导出私有镜像
+      description: '[8.8.0] 租户远程导出私有镜像'
+      operationId: postV8RestImsImagesProject_idExportImage_idRemoteExport
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为202: 响应202代表请求成功'
+  /v8.8.0/rest/ims/images/v1/{project_id}/local-export:
+    post:
+      tags:
+      - 镜像服务
+      summary: 租户本地导出私有镜像
+      description: '[8.8.0] 租户本地导出私有镜像'
+      operationId: postV8RestImsImagesProject_idLocalExport
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /v8.8.0/rest/ims/images/v1/{project_id}/query/{image_id}/associated-ecs-list:
+    get:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像关联的弹性云服务器列表
+      description: '[8.8.0] 租户查询镜像关联的弹性云服务器列表'
+      operationId: getV8RestImsImagesProject_idQueryImage_idAssociatedEcsList
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: page_no
+        in: query
+        required: true
+        schema:
+          type: integer
+        description: 页数 最小数值:1 最大数值:2147483647
+      - name: page_size
+        in: query
+        required: true
+        schema:
+          type: integer
+        description: 页大小 最小数值:1 最大数值:100
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200，查询镜像关联的弹性云服务器列表成功'
+  /v8.8.0/rest/ims/images/v1/{project_id}/query/{image_id}:
+    get:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像详情
+      description: '[8.8.0] 租户查询镜像详情'
+      operationId: getV8RestImsImagesProject_idQueryImage_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200，查询镜像详情成功'
+    put:
+      tags:
+      - 镜像服务
+      summary: 租户更新镜像信息
+      description: '[8.8.0] 租户更新镜像信息'
+      operationId: putV8RestImsImagesProject_idQueryImage_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功，无响应体
+  /v8.8.0/rest/ims/images/v1/{project_id}/query:
+    post:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像列表
+      description: '[8.8.0] 租户查询镜像列表'
+      operationId: postV8RestImsImagesProject_idQuery
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: visibility
+        in: query
+        required: true
+        schema:
+          type: string
+        description: SHARED
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200，查询弹性云服务器列表成功'
+  /v8.8.0/rest/ims/images/v1/{project_id}/share/accept:
+    post:
+      tags:
+      - 镜像服务
+      summary: 共享镜像接受
+      description: '[8.8.0] 共享镜像接受'
+      operationId: postV8RestImsImagesProject_idShareAccept
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                AcceptImageReq:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为202:响应202代表请求成功
+  /v8.8.0/rest/ims/images/v1/{project_id}/share/cancel:
+    post:
+      tags:
+      - 镜像服务
+      summary: 私有镜像取消共享
+      description: '[8.8.0] 私有镜像取消共享'
+      operationId: postV8RestImsImagesProject_idShareCancel
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为202:响应202代表请求成功
+  /v8.8.0/rest/ims/images/v1/{project_id}/share/create:
+    post:
+      tags:
+      - 镜像服务
+      summary: 私有镜像共享
+      description: '[8.8.0] 私有镜像共享'
+      operationId: postV8RestImsImagesProject_idShareCreate
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /v8.8.0/rest/ims/images/v1/{project_id}/share/delete:
+    post:
+      tags:
+      - 镜像服务
+      summary: 删除共享镜像
+      description: '[8.8.0] 删除共享镜像'
+      operationId: postV8RestImsImagesProject_idShareDelete
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                DeleteImageReq:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为202:响应202代表请求成功
+  /v8.8.0/rest/ims/images/v1/{project_id}/share/reject:
+    post:
+      tags:
+      - 镜像服务
+      summary: 共享镜像拒绝
+      description: '[8.8.0] 共享镜像拒绝'
+      operationId: postV8RestImsImagesProject_idShareReject
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                RejectImageReq:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 返回状态码为200:响应200代表请求成功
+  /v8.8.0/rest/ims/images/v1/{project_id}/{image_id}/file-list:
+    get:
+      tags:
+      - 镜像服务
+      summary: 查询镜像下的文件列表
+      description: '[8.8.0] 查询镜像下的文件列表'
+      operationId: getV8RestImsImagesProject_idImage_idFileList
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      - name: 名称
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 描述
+      - name: filename
+        in: query
+        required: true
+        schema:
+          type: string
+        description: 导出镜像文件名称 最小长度:1 最大长度:255 正则约束:^(?!\s)([a-zA-Z0-9_\-\s\.]){0,99}[a-zA-Z0-9_\-]{1}$
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为200: 响应200代表请求成功'
+  /v8.8.0/rest/ims/images/v1/{project_id}:
+    post:
+      tags:
+      - 镜像服务
+      summary: 制作镜像
+      description: '[8.8.0] 制作镜像'
+      operationId: postV8RestImsImagesProject_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                名称:
+                  type: string
+                  description: 描述
+                request:
+                  type: string
+                  description: 是
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: '返回状态码为202: 响应202代表请求成功'
+  /v8.9.0/rest/ims/images/v1/{project_id}/query:
+    post:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像列表
+      description: '[8.9.0] 租户查询镜像列表'
+      operationId: postV8RestImsImagesProject_idQuery
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+  /v8.9.0/rest/ims/images/v1/{project_id}/share/delete:
+    post:
+      tags:
+      - 镜像服务
+      summary: 删除共享镜像，支持批量
+      description: '[8.9.0] 删除共享镜像，支持批量'
+      operationId: postV8RestImsImagesProject_idShareDelete
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+  /v8.9.0/rest/ims/images/v1/{project_id}/share/accept:
+    post:
+      tags:
+      - 镜像服务
+      summary: 共享镜像接受
+      description: '[8.9.0] 共享镜像接受'
+      operationId: postV8RestImsImagesProject_idShareAccept
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+  /v8.9.0/rest/ims/images/v1/{project_id}/share/reject:
+    post:
+      tags:
+      - 镜像服务
+      summary: 共享镜像拒绝
+      description: '[8.9.0] 共享镜像拒绝'
+      operationId: postV8RestImsImagesProject_idShareReject
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+  /v8.9.0/rest/ims/images/v1/{project_id}/share/cancel:
+    post:
+      tags:
+      - 镜像服务
+      summary: 私有镜像批量取消共享
+      description: '[8.9.0] 私有镜像批量取消共享'
+      operationId: postV8RestImsImagesProject_idShareCancel
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+  /v8.9.0/rest/ims/images/v1/{project_id}/share/create:
+    post:
+      tags:
+      - 镜像服务
+      summary: 私有镜像共享
+      description: '[8.9.0] 私有镜像共享'
+      operationId: postV8RestImsImagesProject_idShareCreate
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+  /v8.9.0/rest/ims/images/v1/{project_id}/local-export:
+    post:
+      tags:
+      - 镜像服务
+      summary: 租户本地导出私有镜像
+      description: '[8.9.0] 租户本地导出私有镜像'
+      operationId: postV8RestImsImagesProject_idLocalExport
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+  /v8.9.0/rest/ims/images/v1/{project_id}/export/{image_id}/remote-export:
+    post:
+      tags:
+      - 镜像服务
+      summary: 租户远程导出私有镜像
+      description: '[8.9.0] 租户远程导出私有镜像'
+      operationId: postV8RestImsImagesProject_idExportImage_idRemoteExport
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+  /v8.9.0/rest/ims/images/v1/{project_id}/{image_id}/file-list:
+    get:
+      tags:
+      - 镜像服务
+      summary: 查询镜像下的文件列表
+      description: '[8.9.0] 查询镜像下的文件列表'
+      operationId: getV8RestImsImagesProject_idImage_idFileList
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+  /v8.9.0/rest/ims/images/v1/{project_id}/query/{image_id}:
+    get:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像详情
+      description: '[8.9.0] 租户查询镜像详情'
+      operationId: getV8RestImsImagesProject_idQueryImage_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+    put:
+      tags:
+      - 镜像服务
+      summary: 租户更新镜像信息
+      description: '[8.9.0] 租户更新镜像信息'
+      operationId: putV8RestImsImagesProject_idQueryImage_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: 操作成功
+  /v8.9.0/rest/ims/images/v1/query/{image_id}/details:
+    get:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像详情
+      description: '[8.9.0] 租户查询镜像详情'
+      operationId: getV8RestImsImagesQueryImage_idDetails
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+  /v8.9.0/rest/ims/images/v1/{project_id}/query/{image_id}/associated-ecs-list:
+    get:
+      tags:
+      - 镜像服务
+      summary: 租户查询镜像关联的弹性云服务器列表
+      description: '[8.9.0] 租户查询镜像关联的弹性云服务器列表'
+      operationId: getV8RestImsImagesProject_idQueryImage_idAssociatedEcsList
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: image_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 image_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+  /v8.9.0/rest/ims/images/v1/{project_id}:
+    post:
+      tags:
+      - 镜像服务
+      summary: 远程导入镜像
+      description: '[8.9.0] 远程导入镜像'
+      operationId: postV8RestImsImagesProject_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+  /v8.9.0/rest/ims/images/v1/{project_id}/delete:
+    post:
+      tags:
+      - 镜像服务
+      summary: 删除镜像，支持批量
+      description: '[8.9.0] 删除镜像，支持批量'
+      operationId: postV8RestImsImagesProject_idDelete
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+  /v8.9.0/rest/ims/image-file/v1/{project_id}/multipart-upload:
+    post:
+      tags:
+      - 镜像服务
+      summary: 开启分片上传
+      description: '[8.9.0] 开启分片上传'
+      operationId: postV8RestImsImageFileProject_idMultipartUpload
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+  /v8.9.0/rest/ims/image-file/v1/{project_id}/multipart-upload/{upload_id}/heartbeat:
+    post:
+      tags:
+      - 镜像服务
+      summary: 镜像上传心跳检测
+      description: '[8.9.0] 镜像上传心跳检测'
+      operationId: postV8RestImsImageFileProject_idMultipartUploadUpload_idHeartbeat
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 upload_id
+      responses:
+        '200':
+          description: 操作成功
+  /v8.9.0/rest/ims/image-file/v1/{project_id}/multipart-upload/{upload_id}:
+    post:
+      tags:
+      - 镜像服务
+      summary: 上传分片
+      description: '[8.9.0] 上传分片'
+      operationId: postV8RestImsImageFileProject_idMultipartUploadUpload_id
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 upload_id
+      responses:
+        '200':
+          description: HTTP 200 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码200：
+  /v8.9.0/rest/ims/image-file/v1/{project_id}/multipart-upload/{upload_id}/finish:
+    post:
+      tags:
+      - 镜像服务
+      summary: 完成分片上传
+      description: '[8.9.0] 完成分片上传'
+      operationId: postV8RestImsImageFileProject_idMultipartUploadUpload_idFinish
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 upload_id
+      responses:
+        '200':
+          description: 操作成功
+        '202':
+          description: HTTP 202 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: OK
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_OK:
+                  value:
+                    errorCode: OK
+                    message: 响应状态码202：
+components:
+  securitySchemes:
+    X-Auth-Token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token
+      description: 通过 /service/session 接口获取的 token

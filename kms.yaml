@@ -1,0 +1,1309 @@
+openapi: 3.0.3
+info:
+  title: FusionCompute 8.8.1 KMS 加密机 API
+  version: 8.8.1
+  description: 华为 FusionCompute 8.8.1 KMS 加密机 REST API。
+servers:
+- url: https://{hostname}:{port}
+  variables:
+    hostname:
+      default: vrm.example.com
+      description: FusionCompute VRM 主机 IP
+    port:
+      default: '8443'
+      description: HTTPS 端口
+tags:
+- name: 密钥管理
+  description: 密钥管理 相关接口
+- name: AKSK管理
+  description: AKSK管理 相关接口
+- name: 加密机模式管理
+  description: 加密机模式管理 相关接口
+paths:
+  /v1.0/{project_id}/kms/list-keys:
+    post:
+      tags:
+      - 密钥管理
+      summary: 密钥列表
+      description: 返回密钥列表信息
+      operationId: postProject_idKmsListKeys
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: string
+                  description: 可选，指定查询返回记录条数，如果指定查询记录条数小于存在的条数，响应参数“truncated”将返回“true”，表示存在分页。取值在密钥最大个数范围以内。例如：100。
+                marker:
+                  type: string
+                  description: 可选，分页查询起始位置标识。分页查询收到的响应参数“truncated”为“true”时，可以发送连续的请求获取更多的记录条数，“marker”设置为响应的next_marker的值。例如：10。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号。
+                key_alias:
+                  type: string
+                  description: 可选，密钥名称，用于密钥搜模糊索。
+                sort:
+                  type: string
+                  description: 可选，指定返回列表的排序方式，可选{"alias asc"，"alias desc"，"create_time desc"，"create_time asc"}中的一种，分别代表按照名称或者创建时间升降序排列。
+                keys:
+                  type: array
+                  description: key_id列表。
+                key_details:
+                  type: string
+                  description: key_spec
+                next_marker:
+                  type: string
+                  description: 获取下一页所需要传递的“marker”值。当“truncated”为“false”时，“next_marker”为空。
+                truncated:
+                  type: string
+                  description: 是否还有下一页：“true”表示还有数据，“false”表示已经是最后一页。
+                total:
+                  type: integer
+                  description: 密钥总条数。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0308
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0308:
+                  value:
+                    errorCode: KMS.0308
+                    message: 无效的参数
+  /v1.0/{project_id}/kms/create-key:
+    post:
+      tags:
+      - 密钥管理
+      summary: 密钥创建
+      description: 创建用户主密钥，可用来加密数据密钥。 算法字段：cryptoalg=[cryptoalg] 不指定算法字段：/v1.0/{project_id}/kms/create-key 默认值为AES256算法; 指定算法字段：/v1.0/{project_id}/kms/create-key?cryptoalg=[cryptoalg]
+        cryptoalg取值为：“SM4” 为国密SM4算法,“AES256”为AES256算法。
+      operationId: postProject_idKmsCreateKey
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_alias:
+                  type: string
+                  description: 非默认主密钥别名，取值范围为1到255个字符。不能与已有的密钥重名。
+                key_description:
+                  type: string
+                  description: 可选，密钥描述，取值0到255字符。
+                check_duplicate_alias:
+                  type: integer
+                  description: 可选，是否在创建时检测重名。默认为0，代表即使重名时也不会抛出异常，而是停止创建并返回已经存在的密钥信息。当设置为1时，代表创建时发现重名密钥直接抛出错误码。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号 。
+                key_info:
+                  type: string
+                  description: domain_id
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0204
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0204:
+                  value:
+                    errorCode: KMS.0204
+                    message: 请求消息缺少参数
+                err_KMS.1101:
+                  value:
+                    errorCode: KMS.1101
+                    message: key_alias密钥别名非法
+                err_KMS.1103:
+                  value:
+                    errorCode: KMS.1103
+                    message: key_description密钥描述非法
+                err_KMS.1110:
+                  value:
+                    errorCode: KMS.1110
+                    message: alg_type算法类型非法
+  /v1.0/{project_id}/kms/update-key-text:
+    post:
+      tags:
+      - 密钥管理
+      summary: 修改密钥别名及描述
+      operationId: postProject_idKmsUpdateKeyText
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_alias:
+                  type: string
+                  description: 可选，非默认主密钥别名，取值范围为1到255个字符。不能与已有的密钥重名。
+                key_description:
+                  type: string
+                  description: 可选，密钥描述，取值0到255字符。
+                key_id:
+                  type: string
+                  description: 密钥ID，36字节。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号 。
+                key_info:
+                  type: string
+                  description: key_description
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0204
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0204:
+                  value:
+                    errorCode: KMS.0204
+                    message: 请求消息缺少参数
+                err_KMS.1101:
+                  value:
+                    errorCode: KMS.1101
+                    message: key_alias密钥别名非法
+                err_KMS.1103:
+                  value:
+                    errorCode: KMS.1103
+                    message: key_description密钥描述非法
+                err_KMS.1104:
+                  value:
+                    errorCode: KMS.1104
+                    message: 密钥别名已经存在
+  /v1.0/{project_id}/kms/enable-key:
+    post:
+      tags:
+      - 密钥管理
+      summary: 启用密钥
+      description: 启用密钥，密钥启用后才可以使用。密钥为"禁用"状态时才能启用密钥。
+      operationId: postProject_idKmsEnableKey
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID，36字节。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号 。
+                key_info:
+                  type: string
+                  description: key_state
+      responses:
+        '200':
+          description: 操作成功
+        '404':
+          description: HTTP 404 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0207
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0207:
+                  value:
+                    errorCode: KMS.0207
+                    message: 密钥不存在
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.1201
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.1201:
+                  value:
+                    errorCode: KMS.1201
+                    message: 密钥未被禁用
+  /v1.0/{project_id}/kms/disable-key:
+    post:
+      tags:
+      - 密钥管理
+      summary: 禁用密钥
+      description: 禁用密钥，密钥禁用后不可以使用。密钥为"启用"状态时才能禁用密钥。
+      operationId: postProject_idKmsDisableKey
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID，36字节。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号 。
+                key_info:
+                  type: string
+                  description: key_state
+      responses:
+        '200':
+          description: 操作成功
+        '404':
+          description: HTTP 404 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0207
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0207:
+                  value:
+                    errorCode: KMS.0207
+                    message: 密钥不存在
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.1201
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.1201:
+                  value:
+                    errorCode: KMS.1201
+                    message: 密钥未被启用
+  /v1.0/{project_id}/kms/schedule-key-deletion:
+    post:
+      tags:
+      - 密钥管理
+      summary: 计划删除密钥
+      description: 计划多少天后删除密钥，可设置7天～1096天内删除密钥。
+      operationId: postProject_idKmsScheduleKeyDeletion
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID。
+                pending_days:
+                  type: string
+                  description: 计划多少天后删除密钥，取值为7到1096。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号。
+                key_state:
+                  type: string
+                  description: 密钥状态：2为启用状态，3为禁用状态，4为计划删除状态。
+      responses:
+        '200':
+          description: 操作成功
+        '404':
+          description: HTTP 404 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0207
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0207:
+                  value:
+                    errorCode: KMS.0207
+                    message: 密钥不存在
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.1401
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.1401:
+                  value:
+                    errorCode: KMS.1401
+                    message: 计划删除密钥时间范围：7～1096天.
+                err_KMS.1402:
+                  value:
+                    errorCode: KMS.1402
+                    message: 密钥已处于“计划删除”状态.
+  /v1.0/{project_id}/kms/cancel-key-deletion:
+    post:
+      tags:
+      - 密钥管理
+      summary: 取消计划删除密钥
+      description: 取消计划删除密钥。密钥处于“计划删除”状态时才能取消计划删除密钥。
+      operationId: postProject_idKmsCancelKeyDeletion
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号。
+                key_state:
+                  type: string
+                  description: 密钥状态：2为启用状态，3为禁用状态，4为计划删除状态。
+      responses:
+        '200':
+          description: 操作成功
+        '404':
+          description: HTTP 404 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0207
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0207:
+                  value:
+                    errorCode: KMS.0207
+                    message: 密钥不存在
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.1501
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.1501:
+                  value:
+                    errorCode: KMS.1501
+                    message: 密钥未处于“计划删除”状态
+  /v1.0/{project_id}/kms/enable-key-rotation:
+    post:
+      tags:
+      - 密钥管理
+      summary: 开启密钥轮转
+      description: 开启用户主密钥轮换。开启密钥轮换后，默认轮询间隔时间为365天。默认主密钥及外部导入密钥不支持轮换操作
+      operationId: postProject_idKmsEnableKeyRotation
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID，36字节。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号。
+                rotation_interval:
+                  type: integer
+                  description: 可选，轮换周期，取值范围为30~365的整数。周期范围设置根据密钥使用频率进行，若密钥使用频率高，建议设置为短周期；反之，则设置为长周期。默认为365。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.3001
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.3001:
+                  value:
+                    errorCode: KMS.3001
+                    message: rotation_interval不在有效数字范围内
+                err_KMS.0209:
+                  value:
+                    errorCode: KMS.0209
+                    message: 密钥已被禁用，不能使用.
+                err_KMS.0210:
+                  value:
+                    errorCode: KMS.0210
+                    message: 密钥处于“计划删除”状态，不能使用.
+  /v1.0/{project_id}/kms/disable-key-rotation:
+    post:
+      tags:
+      - 密钥管理
+      summary: 关闭密钥轮转
+      description: 关闭用户主密钥轮换。
+      operationId: postProject_idKmsDisableKeyRotation
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID，36字节。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0209
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0209:
+                  value:
+                    errorCode: KMS.0209
+                    message: 密钥已被禁用，不能使用.
+                err_KMS.0210:
+                  value:
+                    errorCode: KMS.0210
+                    message: 密钥处于“计划删除”状态，不能使用.
+  /v1.0/{project_id}/kms/update-key-rotation-interval:
+    post:
+      tags:
+      - 密钥管理
+      summary: 修改密钥轮换周期
+      description: 修改用户主密钥轮换周期
+      operationId: postProject_idKmsUpdateKeyRotationInterval
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key_id:
+                  type: string
+                  description: 密钥ID，36字节。
+                sequence:
+                  type: string
+                  description: 可选，请求消息序列号，36字节序列号。
+                rotation_interval:
+                  type: integer
+                  description: 轮换周期，取值范围为30~365的整数。周期范围设置根据密钥使用频率进行，若密钥使用频率高，建议设置为短周期；反之，则设置为长周期。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.3001
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.3001:
+                  value:
+                    errorCode: KMS.3001
+                    message: rotation_interval不在有效数字范围内
+                err_KMS.0209:
+                  value:
+                    errorCode: KMS.0209
+                    message: 密钥已被禁用，不能使用.
+                err_KMS.0210:
+                  value:
+                    errorCode: KMS.0210
+                    message: 密钥处于“计划删除”状态，不能使用.
+  ? '/json; charset=UTF-8 Accept application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "name":"a",
+    "sort":"create_time asc", "limit":"3", "marker":"0" }'
+  : post:
+      tags:
+      - AKSK管理
+      summary: 查询AKSK列表
+      description: 查询用户所有AKSK列表
+      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenNameASortCreate_timeAscLimitMarker
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 version
+      - name: Authen_TOKEN
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 Authen_TOKEN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: string
+                  description: 可选，指定查询返回记录条数，如果指定查询记录条数小于存在的条数，响应参数“truncated”将返回“true”，表示存在分页。取值在密钥最大个数范围以内。例如：100。
+                marker:
+                  type: string
+                  description: 可选，分页查询起始位置标识。分页查询收到的响应参数“truncated”为“true”时，可以发送连续的请求获取更多的记录条数，“marker”设置为响应的next_marker的值。例如：10。
+                name:
+                  type: string
+                  description: 可选，名称，用于搜模糊索。
+                sort:
+                  type: string
+                  description: 可选，指定返回列表的排序方式，可选{"name asc"，"name desc"，"create_time desc"，"create_time asc"}中的一种，分别代表按照名称或者创建时间升降序排列
+                Aksk_details:
+                  type: string
+                  description: creator
+                next_marker:
+                  type: string
+                  description: 获取下一页所需要传递的“marker”值。当“truncated”为“false”时，“next_marker”为空。
+                truncated:
+                  type: string
+                  description: 是否还有下一页：“true”表示还有数据，“false”表示已经是最后一页。
+                total:
+                  type: integer
+                  description: 密钥总条数。
+      responses:
+        '200':
+          description: 操作成功
+  /v1.0/{project_id}/kms/aksks:
+    post:
+      tags:
+      - AKSK管理
+      summary: AKSK创建
+      description: 创建AKSK
+      operationId: postProject_idKmsAksks
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 密钥名称
+                ak:
+                  type: string
+                  description: 所创建的AK明文
+                sk:
+                  type: string
+                  description: 所创建的SK明文
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.6005
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.6005:
+                  value:
+                    errorCode: KMS.6005
+                    message: AKSK名称不合法.
+                err_KMS.6001:
+                  value:
+                    errorCode: KMS.6001
+                    message: AKSK名称已经存在
+  /v1.0/{project_id}/kms/aksks/{ak}:
+    delete:
+      tags:
+      - AKSK管理
+      summary: AKSK删除
+      description: 删除AKSK
+      operationId: deleteProject_idKmsAksksAk
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: ak
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ak
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ak:
+                  type: string
+                  description: 所创建AKSK的ak明文。位置放在url的路径中。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.3804
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.3804:
+                  value:
+                    errorCode: KMS.3804
+                    message: 请求中参数非法
+  /v1.0/{project_id}/kms/aksks/enable:
+    post:
+      tags:
+      - AKSK管理
+      summary: AKSK启用
+      description: 启用AKSK。
+      operationId: postProject_idKmsAksksEnable
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ak:
+                  type: string
+                  description: 所创建的AK明文
+                name:
+                  type: string
+                  description: 密钥名称
+                state:
+                  type: string
+                  description: 状态：“1”表示启用状态，“2”表示禁用状态。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.6002
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.6002:
+                  value:
+                    errorCode: KMS.6002
+                    message: AKSK不存在
+                err_KMS.6003:
+                  value:
+                    errorCode: KMS.6003
+                    message: AKSK已启用
+  /v1.0/{project_id}/kms/aksks/disable:
+    post:
+      tags:
+      - AKSK管理
+      summary: AKSK禁用
+      description: 禁用AKSK
+      operationId: postProject_idKmsAksksDisable
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ak:
+                  type: string
+                  description: 所创建的AK明文
+                name:
+                  type: string
+                  description: 密钥名称
+                state:
+                  type: string
+                  description: 状态：“1”表示启用状态，“2”表示禁用状态。
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.6002
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.6002:
+                  value:
+                    errorCode: KMS.6002
+                    message: AKSK不存在
+                err_KMS.6004:
+                  value:
+                    errorCode: KMS.6004
+                    message: AKSK已禁用
+  /v1.0/{project_id}/kms/aksks/reset:
+    post:
+      tags:
+      - AKSK管理
+      summary: AKSK重置
+      description: 重置AKSK
+      operationId: postProject_idKmsAksksReset
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ak:
+                  type: string
+                  description: 所创建的AK明文
+                name:
+                  type: string
+                  description: 密钥名称
+                sk:
+                  type: string
+                  description: 所创建的SK明文
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.6002
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.6002:
+                  value:
+                    errorCode: KMS.6002
+                    message: AKSK不存在
+  /v1.0/kms/config-hsm:
+    post:
+      tags:
+      - 加密机模式管理
+      summary: 配置加密机
+      operationId: postKmsConfigHsm
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hsm_company:
+                  type: string
+                  description: 加密机厂商名称
+                hsm_type:
+                  type: string
+                  description: 加密机设备型号
+                ips:
+                  type: array
+                  description: 加密机IP
+                service_port:
+                  type: integer
+                  description: 加密机端口，预留
+                hsm_account:
+                  type: string
+                  description: 加密机账号
+                hsm_password:
+                  type: string
+                  description: 加密机登录密码
+                hsm_service_passwd:
+                  type: string
+                  description: 加密机服务连接密码
+                hsm_state:
+                  type: integer
+                  description: 加密机配置状态。 0：未配置 1：配置中 2：配置成功 3：配置失败
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0308
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0308:
+                  value:
+                    errorCode: KMS.0308
+                    message: 无效的参数
+                err_KMS.4351:
+                  value:
+                    errorCode: KMS.4351
+                    message: 加密机配置失败
+                err_KMS.4352:
+                  value:
+                    errorCode: KMS.4352
+                    message: 加密机已配置成功，无需重复配置
+                err_KMS.4353:
+                  value:
+                    errorCode: KMS.4353
+                    message: 加密机配置中，无需重复配置
+  /v1.0/kms/config-hsm-state:
+    get:
+      tags:
+      - 加密机模式管理
+      summary: 查询加密机配置状态
+      operationId: getKmsConfigHsmState
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hsm_state:
+                  type: integer
+                  description: 加密机配置状态。 0：未配置 1：配置中 2：配置成功 3：配置失败
+      responses:
+        '200':
+          description: 操作成功
+  /v1.0/kms/start-switch:
+    post:
+      tags:
+      - 加密机模式管理
+      summary: 加密机模式切换
+      description: 加密机模式切换为硬件加密机
+      operationId: postKmsStartSwitch
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hsm_company:
+                  type: string
+                  description: 加密机厂商名称
+                hsm_type:
+                  type: string
+                  description: 加密机设备型号
+                cmk_switch:
+                  type: boolean
+                  description: 本节点是否启动加密机切换
+                switch_state:
+                  type: integer
+                  description: 加密机模式切换状态。 0：未切换 1：切换中 2：切换成功 3：切换失败
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: KMS.0308
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_KMS.0308:
+                  value:
+                    errorCode: KMS.0308
+                    message: 无效的参数
+                err_KMS.4301:
+                  value:
+                    errorCode: KMS.4301
+                    message: 当前KMS模式不是软件加密机模式，无法进行切换
+                err_KMS.4302:
+                  value:
+                    errorCode: KMS.4302
+                    message: 更新加密机信息失败
+                err_KMS.4303:
+                  value:
+                    errorCode: KMS.4303
+                    message: 加密机模式切换失败
+                err_KMS.4304:
+                  value:
+                    errorCode: KMS.4304
+                    message: 当前KMS模式已经是硬件加密机模式，无需进行切换
+  /v1.0/kms/switch-state:
+    get:
+      tags:
+      - 加密机模式管理
+      summary: 查询加密机模式切换状态
+      operationId: getKmsSwitchState
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                switch_state:
+                  type: integer
+                  description: 加密机模式切换状态。 0：未切换 1：切换中 2：切换成功 3：切换失败
+      responses:
+        '200':
+          description: 操作成功
+  /v1.0/{project_id}/kms/info:
+    get:
+      tags:
+      - 加密机模式管理
+      summary: 查询KMS配置信息
+      operationId: getProject_idKmsInfo
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kms_type:
+                  type: string
+                  description: KMS类型，根据有无配置加密机进行区分，取值如下： "soft"：软加密版本，未配置硬件加密机； "hardware"：已配置硬件加密机。
+                hsm_company:
+                  type: string
+                  description: 加密机厂商
+                hsm_type:
+                  type: string
+                  description: 加密机型号
+      responses:
+        '200':
+          description: 操作成功
+  /v1.0/{project_id}/kms/hsm-info:
+    get:
+      tags:
+      - 加密机模式管理
+      summary: 查询兼容的加密机厂商及型号
+      description: 查询KMS配置信息
+      operationId: getProject_idKmsHsmInfo
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                supportedHsmList:
+                  type: array
+                  description: hsmInfos
+      responses:
+        '200':
+          description: 操作成功
+components:
+  securitySchemes:
+    X-Auth-Token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token
+      description: 通过 /service/session 接口获取的 token
