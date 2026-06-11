@@ -212,7 +212,6 @@ def make_index():
                 text = ypath.read_text(encoding='utf-8')
                 import re
                 n_ops = len(re.findall(r'操作码:', text))
-                n_tags = 0
                 total_eps += n_ops
                 badge = f"{n_ops} 个操作"
                 meta = "二进制协议"

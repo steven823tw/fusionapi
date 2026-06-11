@@ -161,6 +161,8 @@ paths:
                 contentLibraryDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -230,6 +232,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -340,6 +345,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -450,6 +458,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -609,6 +620,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -649,6 +663,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -1120,6 +1137,9 @@ paths:
                 modifyValuesDtoReq:
                   type: string
                   description: 修改内容
+              required:
+              - 名称
+              - modifyValuesDtoReq
       responses:
         '200':
           description: HTTP 200 错误
@@ -1500,6 +1520,8 @@ paths:
                 appInstanceDtoReq:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -1548,6 +1570,8 @@ paths:
                 modifyAppInstanceDto:
                   type: string
                   description: 变更应用实例请求体
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -2030,6 +2054,8 @@ paths:
                 appInstanceDtoReq:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -2071,6 +2097,9 @@ paths:
                 NodesScanRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - NodesScanRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -2125,6 +2154,9 @@ paths:
                 hostNetworkRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - hostNetworkRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -2173,6 +2205,9 @@ paths:
                 batchModifyHostNetworkRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchModifyHostNetworkRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -2214,6 +2249,9 @@ paths:
                 createBatchUpgradeTaskRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - createBatchUpgradeTaskRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -2309,6 +2347,9 @@ paths:
                 createClusterDowngradeTaskRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - createClusterDowngradeTaskRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -2627,6 +2668,9 @@ paths:
                 createSingleUpgradeTaskRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - createSingleUpgradeTaskRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -2765,6 +2809,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -2848,6 +2894,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3031,6 +3079,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3079,6 +3129,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3161,6 +3213,8 @@ paths:
                 quorumConfigRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3418,6 +3472,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3535,6 +3591,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3624,6 +3682,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3805,6 +3865,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: 操作成功
@@ -3855,6 +3917,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -3909,6 +3973,8 @@ paths:
                 annotations:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -4127,6 +4193,8 @@ paths:
                 labels:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -4181,6 +4249,8 @@ paths:
                 loginNew:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -4276,6 +4346,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -4499,6 +4571,9 @@ paths:
                 clusterExternalRegistryRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - clusterExternalRegistryRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -4640,6 +4715,9 @@ paths:
                 clusterExternalRegistryRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - clusterExternalRegistryRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -4850,6 +4928,8 @@ paths:
                 modifyNamespaceRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -4974,6 +5054,8 @@ paths:
                 namespaceRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -5050,6 +5132,8 @@ paths:
                 deletionDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -5193,6 +5277,8 @@ paths:
                 fileObjectDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: 操作成功
@@ -5335,6 +5421,8 @@ paths:
                 deletionDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -5448,6 +5536,8 @@ paths:
                 deletionDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -5591,6 +5681,8 @@ paths:
                 fileObjectDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: 操作成功
@@ -5733,6 +5825,8 @@ paths:
                 deletionDto:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -5984,6 +6078,9 @@ paths:
                 initializeFileUploadRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - initializeFileUploadRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -6078,6 +6175,9 @@ paths:
                 batchDeleteImageNamespacesRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchDeleteImageNamespacesRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -6318,6 +6418,9 @@ paths:
                 createImageNamespaceRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - createImageNamespaceRequest
       responses:
         '200':
           description: 操作成功
@@ -6360,6 +6463,9 @@ paths:
                 updateImageNamespaceRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - updateImageNamespaceRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -6401,6 +6507,8 @@ paths:
                 batchDeleteExternalImageRepositoryRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -6442,6 +6550,8 @@ paths:
                 queryImageExternalRepositoryRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -6490,6 +6600,8 @@ paths:
                 queryImageExternalRepositoryRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -6606,6 +6718,8 @@ paths:
                 queryImageExternalRepositoryRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -6705,6 +6819,8 @@ paths:
                 queryImageExternalRepositoryRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: 操作成功
@@ -6755,6 +6871,9 @@ paths:
                 body:
                   type: object
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -7012,6 +7131,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -7118,6 +7240,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: 操作成功
@@ -7161,6 +7286,9 @@ paths:
                 startImageGarbageCollectRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - startImageGarbageCollectRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -7258,6 +7386,9 @@ paths:
                 batchScanVulnerByNsIds:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchScanVulnerByNsIds
       responses:
         '200':
           description: HTTP 200 错误
@@ -7306,6 +7437,9 @@ paths:
                 batchScanVulnerByImageIds:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchScanVulnerByImageIds
       responses:
         '200':
           description: HTTP 200 错误
@@ -7360,6 +7494,9 @@ paths:
                 batchScanVulnerByTagIds:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchScanVulnerByTagIds
       responses:
         '200':
           description: HTTP 200 错误
@@ -7401,6 +7538,9 @@ paths:
                 batchDeleteImageScanInfosRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchDeleteImageScanInfosRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -7609,6 +7749,9 @@ paths:
                 batchDeleteImageRepositoriesRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchDeleteImageRepositoriesRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -7803,6 +7946,9 @@ paths:
                 batchDeleteImageTagsRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - batchDeleteImageTagsRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8161,6 +8307,9 @@ paths:
                 updateImageVulnerScanStrategyRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - updateImageVulnerScanStrategyRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8202,6 +8351,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -8243,6 +8395,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -8284,6 +8439,9 @@ paths:
                 body:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - body
       responses:
         '200':
           description: HTTP 200 错误
@@ -8373,6 +8531,9 @@ paths:
                 projectClusterListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectClusterListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8421,6 +8582,9 @@ paths:
                 projectClusterListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectClusterListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8469,6 +8633,9 @@ paths:
                 projectClusterNamespaceListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectClusterNamespaceListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8517,6 +8684,9 @@ paths:
                 projectClusterNamespaceListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectClusterNamespaceListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8677,6 +8847,9 @@ paths:
                 projectImageNamespaceIdListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectImageNamespaceIdListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8725,6 +8898,9 @@ paths:
                 projectImageNamespaceIdListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectImageNamespaceIdListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8832,6 +9008,9 @@ paths:
                 projectUserListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectUserListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -8880,6 +9059,9 @@ paths:
                 projectUserListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectUserListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -9049,6 +9231,9 @@ paths:
                 modifyProjectRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - modifyProjectRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -9154,6 +9339,9 @@ paths:
                 projectRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - projectRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -9202,6 +9390,9 @@ paths:
                 systemConfigDeletionListRequest:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - systemConfigDeletionListRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -9284,6 +9475,9 @@ paths:
                 saveSystemConfigRequestList:
                   type: array
                   description: 是
+              required:
+              - 名称
+              - saveSystemConfigRequestList
       responses:
         '200':
           description: HTTP 200 错误
@@ -9353,6 +9547,8 @@ paths:
                 body:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -9401,6 +9597,8 @@ paths:
                 quorumServerClientCertRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -9622,6 +9820,8 @@ paths:
                 quorumServerModifyRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -9690,6 +9890,8 @@ paths:
                 quorumServerRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -10076,6 +10278,8 @@ paths:
                 componentConfigRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -10158,6 +10362,8 @@ paths:
                 componentInstallRequest:
                   type: string
                   description: 否
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误

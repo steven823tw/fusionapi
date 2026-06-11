@@ -152,6 +152,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -201,6 +204,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -256,6 +262,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -311,6 +320,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -448,6 +460,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -568,6 +583,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -629,6 +647,9 @@ paths:
                 operationRequest:
                   type: string
                   description: 集群操作body
+              required:
+              - 名称
+              - operationRequest
       responses:
         '200':
           description: HTTP 200 错误
@@ -846,6 +867,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -955,6 +979,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -1051,6 +1078,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -1100,6 +1130,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -1227,6 +1260,8 @@ paths:
                 request:
                   type: string
                   description: 伸缩策略操作请求
+              required:
+              - 名称
       responses:
         '200':
           description: HTTP 200 错误
@@ -1364,6 +1399,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -1413,6 +1451,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误

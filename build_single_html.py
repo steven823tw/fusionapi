@@ -116,7 +116,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <script>
   const OPENAPI_URLS = {swagger_urls_json};
   const MD_PAYLOADS = {md_payloads_json};
-  const SPECS_META = {specs_meta_json};
 
   const tabsEl = document.getElementById('tabs');
   OPENAPI_URLS.forEach(spec => {{
@@ -204,7 +203,6 @@ def build_offline():
         js_block=js_block,
         swagger_urls_json=json.dumps(build_swagger_urls(), ensure_ascii=False),
         md_payloads_json=json.dumps(build_md_payloads(), ensure_ascii=False),
-        specs_meta_json=json.dumps(SPECS, ensure_ascii=False),
         total=total_paths(),
         size_mb=0,  # patched below
     )
@@ -232,7 +230,6 @@ def build_online():
         js_block=js_block,
         swagger_urls_json=json.dumps(build_swagger_urls(), ensure_ascii=False),
         md_payloads_json=json.dumps(build_md_payloads(), ensure_ascii=False),
-        specs_meta_json=json.dumps(SPECS, ensure_ascii=False),
         total=total_paths(),
         size_mb=0,
     )

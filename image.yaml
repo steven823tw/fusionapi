@@ -52,6 +52,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: 操作成功
@@ -187,6 +190,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -236,6 +242,9 @@ paths:
                 DeleteImageReq:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - DeleteImageReq
       responses:
         '200':
           description: 操作成功
@@ -293,6 +302,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: 操作成功
@@ -344,6 +356,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -500,6 +515,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -561,6 +579,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -610,6 +631,9 @@ paths:
                 AcceptImageReq:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - AcceptImageReq
       responses:
         '200':
           description: 操作成功
@@ -661,6 +685,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: 操作成功
@@ -712,6 +739,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: HTTP 200 错误
@@ -761,6 +791,9 @@ paths:
                 DeleteImageReq:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - DeleteImageReq
       responses:
         '200':
           description: 操作成功
@@ -812,6 +845,9 @@ paths:
                 RejectImageReq:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - RejectImageReq
       responses:
         '200':
           description: HTTP 200 错误
@@ -915,6 +951,9 @@ paths:
                 request:
                   type: string
                   description: 是
+              required:
+              - 名称
+              - request
       responses:
         '200':
           description: 操作成功

@@ -101,11 +101,6 @@ def normalize_path(raw: str) -> str:
         body = url_m.group(1)
     # If body still starts with host-style content (no /), strip leading <...>:
     # e.g. '<site_uri>/<site_id>' -> take after first '/'
-    if '://' in body:
-        # last resort: take everything from first '/'
-        idx = body.find('/', body.find('://') + 3)
-        if idx >= 0:
-            body = body[idx:]
     # Ensure leading /
     if not body.startswith('/'):
         body = '/' + body
@@ -407,20 +402,20 @@ def render_openapi_yaml(title: str, version: str, description: str, endpoints: l
             op['parameters'] = all_params
         if body_params:
             props = OrderedDict()
+            required_names = []
             for p in body_params:
                 props[p['name']] = OrderedDict([
                     ('type', p['type']),
                     ('description', p['description']),
                 ])
                 if p['required']:
-                    props[p['name']] = OrderedDict([
-                        ('type', p['type']),
-                        ('description', p['description']),
-                    ])
+                    required_names.append(p['name'])
             body_schema = OrderedDict([
                 ('type', 'object'),
                 ('properties', props),
             ])
+            if required_names:
+                body_schema['required'] = required_names
             op['requestBody'] = OrderedDict([
                 ('required', True),
                 ('content', {

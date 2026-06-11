@@ -717,17 +717,36 @@ paths:
                   value:
                     errorCode: KMS.0210
                     message: 密钥处于“计划删除”状态，不能使用.
-  ? '/json; charset=UTF-8 Accept application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "name":"a",
-    "sort":"create_time asc", "limit":"3", "marker":"0" }'
+  ? '/v1.0/{project_id}/kms/aksks/listHTTP/1.1 Host https:/{ip}:{port} Content-Type application/json; charset=UTF-8 Accept
+    application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "name":"a", "sort":"create_time asc",
+    "limit":"3", "marker":"0" }'
   : post:
       tags:
       - AKSK管理
       summary: 查询AKSK列表
       description: 查询用户所有AKSK列表
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenNameASortCreate_timeAscLimitMarker
+      operationId: postProject_idKmsAksksListhttpHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenNameASortCreate_timeAscLimitMarker
       security:
       - X-Auth-Token: []
       parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 project_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true

@@ -979,6 +979,8 @@ paths:
                 taskUri:
                   type: string
                   description: 配置站点对应的任务uri
+              required:
+              - items
       responses:
         '200':
           description: 操作成功
@@ -1276,6 +1278,12 @@ paths:
                 uri:
                   type: string
                   description: 访问该资源集群的uri
+              required:
+              - name
+              - isEnableImc
+              - imcSetting
+              - isEnableBootSequence
+              - bootSequenceLevel
       responses:
         '200':
           description: 操作成功
@@ -1529,6 +1537,9 @@ paths:
                 migrateTransmitPolicy:
                   type: string
                   description: 虚拟机热迁移传输通道安全策略 TLSv1_3：TLS加密通道 NONE：非加密通道 默认为NONE
+              required:
+              - imcSetting
+              - bootSequenceLevel
       responses:
         '200':
           description: 操作成功
@@ -1706,6 +1717,10 @@ paths:
                 hasSwapUsed:
                   type: boolean
                   description: 是否存在已分配容量不为0的交换分区
+              required:
+              - isEnableImc
+              - imcSetting
+              - bootSequenceLevel
       responses:
         '200':
           description: 操作成功
@@ -1865,6 +1880,8 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - members
       responses:
         '200':
           description: 操作成功
@@ -2025,6 +2042,8 @@ paths:
                 taskUri:
                   type: string
                   description: 添加host任务对应的 URI 地址
+              required:
+              - ip
       responses:
         '200':
           description: 操作成功
@@ -2642,6 +2661,8 @@ paths:
                 dataStoreResource:
                   type: string
                   description: allocatedSizeGB
+              required:
+              - maxImcSetting
       responses:
         '200':
           description: 操作成功
@@ -2734,6 +2755,8 @@ paths:
                 taskUri:
                   type: string
                   description: 添加host任务对应的 URI 地址
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -3755,6 +3778,8 @@ paths:
                 taskUri:
                   type: string
                   description: 迁空主机上所有虚拟机的任务uri
+              required:
+              - frequencyReduceMode
       responses:
         '200':
           description: 操作成功
@@ -4107,6 +4132,11 @@ paths:
                 taskUri:
                   type: string
                   description: 添加host任务对应的 URI 地址
+              required:
+              - userEVSFlag
+              - forwardCpuCount
+              - hugepageCount
+              - appType
       responses:
         '200':
           description: 操作成功
@@ -4277,6 +4307,8 @@ paths:
                 evsBalanceSwitch:
                   type: boolean
                   description: true表示开启CPU和大页内存在所有NUMA节点上均分；false表示未开启CPU和大页内存在所有NUMA节点上均分。
+              required:
+              - userEVSFlag
       responses:
         '200':
           description: 操作成功
@@ -4491,6 +4523,9 @@ paths:
                 taskUrn:
                   type: string
                   description: 配置主机大页任务对应的标识。
+              required:
+              - hugePagesz
+              - hugePages
       responses:
         '200':
           description: 操作成功
@@ -4560,6 +4595,8 @@ paths:
                 xcopyFlag:
                   type: integer
                   description: 必选配置。是否开启硬件加速配置。 0、不开启 1、开启
+              required:
+              - xcopyFlag
       responses:
         '200':
           description: 操作成功
@@ -4598,6 +4635,9 @@ paths:
                 taskUrn:
                   type: string
                   description: 配置大页任务对应URI地址
+              required:
+              - ip
+              - rootPassword
       responses:
         '200':
           description: 操作成功
@@ -4679,6 +4719,10 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - name
+              - quantityGB
+              - datastoreUrn
       responses:
         '200':
           description: 操作成功
@@ -4773,6 +4817,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -4886,17 +4932,47 @@ paths:
                   value:
                     errorCode: '400'
                     message: '10000004'
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "pretreatType"
-    : 0 }'
+  ? '/{site_uri}/{site_id}/network/{host_id}/pretreatNics Host https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "pretreatType" : 0 }'
   : post:
       tags:
       - Host管理
       summary: 物理网卡预处理操作
       description: 物理网卡预处理操作，包括备份主机和VRM上的网卡信息；支持更换\添加物理网卡；不支持多个主机批量操作，每个主机只支持更换\添加物理网卡单一操作；更换\添加物理网卡前，需将主机上的虚拟机关闭或迁移到其他主机。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenPretreattype
+      operationId: postSite_uriSite_idNetworkHost_idPretreatnicsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenPretreattype
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: host_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 host_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -4919,6 +4995,8 @@ paths:
                 pretreatType:
                   type: integer
                   description: '必选。预处理类型 0: 更换网卡预处理操作 1: 添加网卡预处理操作'
+              required:
+              - pretreatType
       responses:
         '200':
           description: 操作成功
@@ -4945,16 +5023,41 @@ paths:
                   value:
                     errorCode: '10900041'
                     message: 主机上有非停止状态的虚拟机，不能执行此操作
-  '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { }':
-    get:
+  ? '/{site_uri}/{site_id}/network/queryPretreatedPhyNicTask Host https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { }'
+  : get:
       tags:
       - Host管理
       summary: 主机网卡预处理任务查询
       description: 查询是否有主机是否做过预处理操作。
-      operationId: getJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      operationId: getSite_uriSite_idNetworkQuerypretreatedphynictaskHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -4983,15 +5086,47 @@ paths:
       responses:
         '200':
           description: 操作成功
-    post:
+  ? '/{site_uri}/{site_id}/network/{host_id}/addNics Host https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { }'
+  : post:
       tags:
       - Host管理
-      summary: 主机网卡更换
-      description: 物理网卡更新操作，根据主机上新的网卡信息更新VRM上的网卡信息；支持更换物理网卡的场景；不支持多个主机批量操作，每个主机只支持更换物理网卡单一操作；拆卸/增加/更换物理网卡前，需将主机上的虚拟机关闭或迁移到其他主机。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      summary: 主机网卡新增
+      description: 物理网卡新增操作，根据主机上新的网卡信息更新VRM上的网卡信息；支持新增物理网卡的场景；不支持多个主机批量操作，每个主机只支持新增物理网卡单一操作；拆卸/增加/更换物理网卡前，需将主机上的虚拟机关闭或迁移到其他主机。
+      operationId: postSite_uriSite_idNetworkHost_idAddnicsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: host_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 host_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -5030,18 +5165,128 @@ paths:
                   value:
                     errorCode: '10900041'
                     message: 主机上有非停止状态的虚拟机，不能执行此操作
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "isReplaceboard":
-    boolean "isReplaceCpu": boolean "isReplaceMemory": boolean "isReplaceHBA": boolean "isReplaceNic": boolean "nicOperationProperties":
-    { "nicOperationType": integer /0:更换网卡, 1:新增网卡 "isUpdateNicInfo": { "isUpdateNetRules": boolean } } }'
+  ? '/{site_uri}/{site_id}/network/{host_id}/replaceNics Host https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { }'
+  : post:
+      tags:
+      - Host管理
+      summary: 主机网卡更换
+      description: 物理网卡更新操作，根据主机上新的网卡信息更新VRM上的网卡信息；支持更换物理网卡的场景；不支持多个主机批量操作，每个主机只支持更换物理网卡单一操作；拆卸/增加/更换物理网卡前，需将主机上的虚拟机关闭或迁移到其他主机。
+      operationId: postSite_uriSite_idNetworkHost_idReplacenicsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: host_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 host_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 version
+      - name: Authen_TOKEN
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 Authen_TOKEN
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '10504067'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_10504067:
+                  value:
+                    errorCode: '10504067'
+                    message: 网卡部件更换时，主机要处于维护模式
+                err_10900041:
+                  value:
+                    errorCode: '10900041'
+                    message: 主机上有非停止状态的虚拟机，不能执行此操作
+  ? '/{site_uri}/{site_id}/hosts/{host_id}/action/replace Host https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "isReplaceboard": boolean "isReplaceCpu":
+    boolean "isReplaceMemory": boolean "isReplaceHBA": boolean "isReplaceNic": boolean "nicOperationProperties": { "nicOperationType":
+    integer /0:更换网卡, 1:新增网卡 "isUpdateNicInfo": { "isUpdateNetRules": boolean } } }'
   : post:
       tags:
       - Host管理
       summary: 主机更换部件
       description: 主板更换操作。根据主机上新的硬件信息更新VRM上的主板、CPU、内存、网卡等信息；要求主板型号必须相同；CPU、内存、网卡型号相同； (当前仅计算型存储即插即用场景)
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIsreplaceboardBooleanIsreplacecpuBooleanIsreplacememoryBooleanIsreplacehbaBooleanIsreplacenicBooleanNicoperationpropertiesNicoperationtypeIntegerIsupdatenicinfoIsupdatenetrulesBoolean
+      operationId: postSite_uriSite_idHostsHost_idActionReplaceHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIsreplaceboardBooleanIsreplacecpuBooleanIsreplacememoryBooleanIsreplacehbaBooleanIsreplacenicBooleanNicoperationpropertiesNicoperationtypeIntegerIsupdatenicinfoIsupdatenetrulesBoolean
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: host_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 host_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -5170,6 +5415,10 @@ paths:
                 taskUri:
                   type: string
                   description: 添加host任务对应的 URI 地址
+              required:
+              - userIOStackFlag
+              - vcpuCount
+              - hugepageCount
       responses:
         '200':
           description: 操作成功
@@ -5338,6 +5587,8 @@ paths:
                 hugepageCount:
                   type: integer
                   description: 需要大页的个数。
+              required:
+              - userIOStackFlag
       responses:
         '200':
           description: 操作成功
@@ -5376,6 +5627,8 @@ paths:
                 hugepageCount:
                   type: integer
                   description: 需要大页的个数。
+              required:
+              - userIOStackFlag
       responses:
         '200':
           description: 操作成功
@@ -5465,6 +5718,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - hostUrns
       responses:
         '200':
           description: 操作成功
@@ -6213,6 +6468,13 @@ paths:
                 taskUri:
                   type: string
                   description: 创建虚拟机任务对应的URI地址
+              required:
+              - name
+              - vmConfig
+              - osOptions
+              - uuid
+              - enableImc
+              - imcSetting
       responses:
         '200':
           description: 操作成功
@@ -7147,6 +7409,9 @@ paths:
                 taskUri:
                   type: string
                   description: 修改虚拟机任务对应的URI地址。
+              required:
+              - enableImc
+              - imcSetting
       responses:
         '200':
           description: 操作成功
@@ -7963,6 +8228,9 @@ paths:
                 taskUri:
                   type: string
                   description: 迁移虚拟机任务对应的URI地。
+              required:
+              - location
+              - frequencyReduceMode
       responses:
         '200':
           description: 操作成功
@@ -8707,6 +8975,8 @@ paths:
                 taskUri:
                   type: string
                   description: 修改虚拟机磁盘IO模式任务对应的URI地址。
+              required:
+              - volumeId
       responses:
         '200':
           description: 操作成功
@@ -8852,6 +9122,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri地址
+              required:
+              - devicePath
       responses:
         '200':
           description: 操作成功
@@ -9301,6 +9573,8 @@ paths:
                 taskUri:
                   type: string
                   description: 添加网卡任务对应的URI地址。
+              required:
+              - portGroupUrn
       responses:
         '200':
           description: 操作成功
@@ -9680,6 +9954,8 @@ paths:
                 nicSpecification:
                   type: string
                   description: 网卡网络配置，必选。参见表3-11。
+              required:
+              - nicSpecification
       responses:
         '200':
           description: 操作成功
@@ -9907,6 +10183,8 @@ paths:
                 urn:
                   type: string
                   description: 在线修改端口组任务对应的URN标识
+              required:
+              - txLimit
       responses:
         '200':
           description: 操作成功
@@ -10183,6 +10461,8 @@ paths:
                 taskUri:
                   type: string
                   description: 挂卷任务对应的URI地址
+              required:
+              - volUrn
       responses:
         '200':
           description: 操作成功
@@ -10451,6 +10731,8 @@ paths:
                 taskUri:
                   type: string
                   description: 卸载磁盘任务对应的URI地址
+              required:
+              - volUrn
       responses:
         '200':
           description: 操作成功
@@ -11049,6 +11331,11 @@ paths:
                 taskUri:
                   type: string
                   description: 任务URI
+              required:
+              - drDrillOption
+              - uuid
+              - enableImc
+              - imcSetting
       responses:
         '200':
           description: 操作成功
@@ -12193,6 +12480,9 @@ paths:
                 recover:
                   type: boolean
                   description: 虚拟机Tools一定时间（10分钟）内无响应时，是否重启虚拟机 true：重启 false：不重启
+              required:
+              - ovfDescriptor
+              - url
       responses:
         '200':
           description: 操作成功
@@ -12482,6 +12772,12 @@ paths:
                 serverLeaseUri:
                   type: string
                   description: 访问服务端链接信息的URI地址。
+              required:
+              - vmConfig
+              - osOptions
+              - url
+              - enableImc
+              - imcSetting
       responses:
         '200':
           description: 操作成功
@@ -13115,6 +13411,9 @@ paths:
                 serverLeaseUri:
                   type: string
                   description: 访问服务端链接信息的URI地址。
+              required:
+              - format
+              - url
       responses:
         '200':
           description: 操作成功
@@ -13804,6 +14103,8 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -14872,6 +15173,14 @@ paths:
                 policyIds:
                   type: string
                   description: 快照策略ID列表，必选，最大长度为100
+              required:
+              - name
+              - maxScheduledSnapshots
+              - name
+              - maxScheduledSnapshots
+              - policyIds
+              - policyIds
+              - policyIds
       responses:
         '200':
           description: 操作成功
@@ -15161,6 +15470,8 @@ paths:
                 bindMode:
                   type: string
                   description: Usb绑定模式，可选，取值范围（本地或远端 local/network），默认为本地（local）。
+              required:
+              - usbUrn
       responses:
         '200':
           description: 操作成功
@@ -15389,6 +15700,8 @@ paths:
                 taskUri:
                   type: string
                   description: 移除usb设备任务对应的URI地址
+              required:
+              - usbUrn
       responses:
         '200':
           description: 操作成功
@@ -16187,6 +16500,10 @@ paths:
                 taskUri:
                   type: string
                   description: 迁移虚拟机任务对应的URI地址。
+              required:
+              - disks
+              - speed
+              - isFrequencyReduce
       responses:
         '200':
           description: 操作成功
@@ -16776,6 +17093,13 @@ paths:
                 taskUri:
                   type: string
                   description: 整机迁移虚拟机任务对应的URI地址。
+              required:
+              - remoteSiteUrn
+              - desClusterUrn
+              - location
+              - srcLocation
+              - disks
+              - speed
       responses:
         '200':
           description: 操作成功
@@ -17462,6 +17786,9 @@ paths:
                 taskUri:
                   type: string
                   description: 设置虚拟机用户任务对应的URI地址
+              required:
+              - userName
+              - password
       responses:
         '200':
           description: 操作成功
@@ -17602,6 +17929,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务对应的 URI 地址。
+              required:
+              - vncNewPassword
       responses:
         '200':
           description: 操作成功
@@ -17812,6 +18141,12 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - name
+              - quantityGB
+              - datastoreUrn
+              - isThin
+              - type
       responses:
         '200':
           description: 操作成功
@@ -18137,6 +18472,10 @@ paths:
                 checkValue:
                   type: string
                   description: 必选参数，用户自定义脚本文件的sha256摘要值，调用用户需获取到sha256摘要值并作为输入参数，如果输入摘要值与实际摘要值不符合时，执行失败. 参数cmdType、 cmdFile、cmdPara、checkValue字符串长度总和不能超过1015个字符
+              required:
+              - cmdType
+              - cmdFile
+              - checkValue
       responses:
         '200':
           description: 操作成功
@@ -18703,6 +19042,8 @@ paths:
                 taskUri:
                   type: string
                   description: vcpu绑定任务对应的URI地址。
+              required:
+              - cpuBindType
       responses:
         '200':
           description: 操作成功
@@ -18801,6 +19142,8 @@ paths:
                 format:
                   type: boolean
                   description: 是否格式化，默认否，可选。（解绑SSD设备时有效）
+              required:
+              - pciUrn
       responses:
         '200':
           description: 操作成功
@@ -19202,6 +19545,8 @@ paths:
                 taskUri:
                   type: string
                   description: 批量删除总任务对应的URI地址。
+              required:
+              - isFormat
       responses:
         '200':
           description: 操作成功
@@ -19289,6 +19634,8 @@ paths:
                 taskUri:
                   type: string
                   description: 清空回收站总任务对应的URI地址
+              required:
+              - isFormat
       responses:
         '200':
           description: 操作成功
@@ -19547,6 +19894,11 @@ paths:
                 taskUri:
                   type: string
                   description: 批量变更虚拟机网卡所属端口组任务的URI地址。
+              required:
+              - srcPortGroupUrn
+              - srcPortGroupName
+              - targetPortGroupName
+              - nics
       responses:
         '200':
           description: 操作成功
@@ -19792,6 +20144,8 @@ paths:
                 taskUri:
                   type: string
                   description: 设置网卡网络连接任务对应的URI地址。
+              required:
+              - nicIds
       responses:
         '200':
           description: 操作成功
@@ -20000,6 +20354,12 @@ paths:
                 taskUrn:
                   type: string
                   description: 注册虚拟机Urn
+              required:
+              - vmConfig
+              - osOptions
+              - srcInstanceId
+              - status
+              - datastoreUrn
       responses:
         '200':
           description: 操作成功
@@ -21795,6 +22155,8 @@ paths:
                 uri:
                   type: string
                   description: 访问该均衡组的uri
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -22141,16 +22503,41 @@ paths:
                   value:
                     errorCode: '10000004'
                     message: 操作数据库异常。
-  ? '/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "drsExtensionConfig": [{ "key": "MiddleVmMigrationTime",
-    "value": "100" }] }'
+  ? '/PUT{cluster_uri}/{cluster_id}/action/modifydrsextconfigHTTP/1.1 Host: https:/{ip}:{port} Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "drsExtensionConfig": [{ "key": "MiddleVmMigrationTime", "value": "100" }]
+    }'
   : put:
       tags:
       - 资源调度(DRS)管理
       summary: 修改DRS高级选项
-      operationId: putJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDrsextensionconfigKeyMiddlevmmigrationtimeValue
+      operationId: putPutCluster_uriCluster_idActionModifydrsextconfighttpHostHttpsIpPortAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDrsextensionconfigKeyMiddlevmmigrationtimeValue
       security:
       - X-Auth-Token: []
       parameters:
+      - name: cluster_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 cluster_uri
+      - name: cluster_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 cluster_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -22532,16 +22919,35 @@ paths:
                   value:
                     errorCode: '400'
                     message: '10412006'
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token:{Authen_TOKEN} { "policyIdList":
-    [ 9,10 ], "managementStatus":"enabled" }'
+  ? '/service/sites/{site_id}/policies/drx/management-status Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token:{Authen_TOKEN} { "policyIdList": [ 9,10 ], "managementStatus":"enabled"
+    }'
   : put:
       tags:
       - DRX管理
       summary: 批量启停策略
-      operationId: putJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenPolicyidlistManagementstatusEnabled
+      operationId: putSitesSite_idPoliciesDrxManagementStatusHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenPolicyidlistManagementstatusEnabled
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -22919,6 +23325,9 @@ paths:
                 addMemoryTotal:
                   type: integer
                   description: 扩容内存统计，单位：GB
+              required:
+              - startTime
+              - endTime
       responses:
         '200':
           description: 操作成功
@@ -23329,6 +23738,8 @@ paths:
                 results:
                   type: string
                   description: message
+              required:
+              - usbIdList
       responses:
         '200':
           description: 操作成功
@@ -23395,6 +23806,8 @@ paths:
                 results:
                   type: string
                   description: message
+              required:
+              - usbIdList
       responses:
         '200':
           description: 操作成功
@@ -24066,6 +24479,8 @@ paths:
                 uri:
                   type: string
                   description: 访问该文件夹的uri
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -25829,6 +26244,11 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - port
+              - userName
+              - file
+              - password
       responses:
         '200':
           description: 操作成功
@@ -26043,6 +26463,11 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - port
+              - userName
+              - file
+              - password
       responses:
         '200':
           description: 操作成功
@@ -26257,6 +26682,9 @@ paths:
                 storageAdapter:
                   type: string
                   description: taskUri
+              required:
+              - urn
+              - wwn
       responses:
         '200':
           description: 操作成功
@@ -26333,21 +26761,40 @@ paths:
                   value:
                     errorCode: 系统内部异常，请联系技术支持人员。
                     message: 系统内部异常，请联系技术支持人员。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "name":string,
-    "storageType":string, "managementIp":string, "managementPort":integer, "dataChannel":[{"ip":string,"port":integer}], "username":string,
-    "password":string, "vender":string, "deviceType":string, "iSCSITargetIQN":string, "chapPasswd":string, "chapUserName":string,
-    "digest":integer, (KVM未支持) "accessMode":integer, "hostUrn":list, / host urn “autoscan”:Integer， “authorizedAllInfo”:[{
-    " projectId ":string," domain ": string, " region ":string, " ak ":string, " sk ":string, " az ":string, " dssId ":string,
-    " usr ":string, " password ":string, " userDomainId ":string}] }'
+  ? '/{storageresource_uri} Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "name":string, "storageType":string, "managementIp":string, "managementPort":integer,
+    "dataChannel":[{"ip":string,"port":integer}], "username":string, "password":string, "vender":string, "deviceType":string,
+    "iSCSITargetIQN":string, "chapPasswd":string, "chapUserName":string, "digest":integer, (KVM未支持) "accessMode":integer,
+    "hostUrn":list, / host urn “autoscan”:Integer， “authorizedAllInfo”:[{ " projectId ":string," domain ": string, " region
+    ":string, " ak ":string, " sk ":string, " az ":string, " dssId ":string, " usr ":string, " password ":string, " userDomainId
+    ":string}] }'
   : post:
       tags:
       - 存储资源管理
       summary: 添加存储资源
       description: 添加存储资源信息
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenNameStringStoragetypeStringManagementipStringManagementportIntegerDatachannelIpStringPortIntegerUsernameStringPasswordStringVenderStringDevicetypeStringIscsitargetiqnStringChappasswdStringChapusernameStringDigestIntegerKvmAccessmodeIntegerHosturnListHostUrnAutoscanIntegerAuthorizedallinfoProjectidStringDomainStringRegionStringAkStringSkStringAzStringDssidStringUsrStringPasswordStringUserdomainidString
+      operationId: postStorageresource_uriHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenNameStringStoragetypeStringManagementipStringManagementportIntegerDatachannelIpStringPortIntegerUsernameStringPasswordStringVenderStringDevicetypeStringIscsitargetiqnStringChappasswdStringChapusernameStringDigestIntegerKvmAccessmodeIntegerHosturnListHostUrnAutoscanIntegerAuthorizedallinfoProjectidStringDomainStringRegionStringAkStringSkStringAzStringDssidStringUsrStringPasswordStringUserdomainidString
       security:
       - X-Auth-Token: []
       parameters:
+      - name: storageresource_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 storageresource_uri
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -26445,6 +26892,17 @@ paths:
                 taskUri:
                   type: string
                   description: 添加存储资源对应的任务uri
+              required:
+              - name
+              - storageType
+              - managementIp
+              - managementPort
+              - dataChannel
+              - vender
+              - deviceType
+              - iSCSITargetIQN
+              - accessProtocols
+              - hostUrns
       responses:
         '200':
           description: 操作成功
@@ -26786,6 +27244,10 @@ paths:
                 storageResources:
                   type: string
                   description: hostList
+              required:
+              - limit
+              - offset
+              - used
       responses:
         '200':
           description: 操作成功
@@ -27017,6 +27479,8 @@ paths:
                 taskUri:
                   type: string
                   description: 修改存储资源属性对应的任务uri
+              required:
+              - dataChannel
       responses:
         '200':
           description: 操作成功
@@ -27359,6 +27823,9 @@ paths:
                 taskUri:
                   type: string
                   description: 主机连接存储资源对应的任务uri
+              required:
+              - hostUrn
+              - accessProtocol
       responses:
         '200':
           description: 操作成功
@@ -27643,6 +28110,8 @@ paths:
                 taskUri:
                   type: string
                   description: 主机断开存储资源对应的任务uri
+              required:
+              - hostUrn
       responses:
         '200':
           description: 操作成功
@@ -27778,6 +28247,10 @@ paths:
                 dataChannel:
                   type: string
                   description: status
+              required:
+              - storageResourceID
+              - hostUrn
+              - sessionState
       responses:
         '200':
           description: 操作成功
@@ -27845,6 +28318,10 @@ paths:
                 taskUri:
                   type: string
                   description: 主机删除存储资源会话对应的任务uri
+              required:
+              - storageResourceID
+              - hostUrn
+              - ip
       responses:
         '200':
           description: 操作成功
@@ -27955,6 +28432,9 @@ paths:
                 nasStoragePathInfoList:
                   type: string
                   description: nasPathName
+              required:
+              - limit
+              - offset
       responses:
         '200':
           description: 操作成功
@@ -28015,6 +28495,8 @@ paths:
                 taskUri:
                   type: string
                   description: 存储刷新任务uri
+              required:
+              - hostUrn
       responses:
         '200':
           description: 操作成功
@@ -28219,6 +28701,8 @@ paths:
                 taskUri:
                   type: string
                   description: 存储刷新任务URI
+              required:
+              - hostUrn
       responses:
         '200':
           description: 操作成功
@@ -28363,6 +28847,10 @@ paths:
                 storageUnits:
                   type: string
                   description: 见4.1.2 存储设备。
+              required:
+              - hostUrn
+              - useState
+              - deviceType
       responses:
         '200':
           description: 操作成功
@@ -28439,6 +28927,11 @@ paths:
                 storageUnits:
                   type: string
                   description: hostList
+              required:
+              - limit
+              - offset
+              - useState
+              - deviceType
       responses:
         '200':
           description: 操作成功
@@ -28615,6 +29108,11 @@ paths:
                 taskUri:
                   type: string
                   description: 创建数据存储对应的任务uri
+              required:
+              - hostUrn
+              - storageUnitUrn
+              - name
+              - useType
       responses:
         '200':
           description: 操作成功
@@ -28786,28 +29284,21 @@ paths:
                   value:
                     errorCode: 挂载或卸载数据存储目录失败，系统可能出现异常，请排查。
                     message: 挂载或卸载数据存储目录失败，系统可能出现异常，请排查。
-  '/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}':
     get:
       tags:
       - 数据存储管理
       summary: 分页查询站点/主机/集群下所有数据存储
       description: 分页查询站点/主机/集群下所有数据存储。由GM和VDI调用。
-      operationId: getJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      operationId: getDatastore_uri
       security:
       - X-Auth-Token: []
       parameters:
-      - name: version
+      - name: datastore_uri
         in: path
         required: true
         schema:
           type: string
-        description: 路径参数 version
-      - name: Authen_TOKEN
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 路径参数 Authen_TOKEN
+        description: 路径参数 datastore_uri
       requestBody:
         required: true
         content:
@@ -29083,6 +29574,8 @@ paths:
                 taskUri:
                   type: string
                   description: 删除数据存储对应的任务uri
+              required:
+              - hostUrn
       responses:
         '200':
           description: 操作成功
@@ -29305,6 +29798,8 @@ paths:
                 taskUri:
                   type: string
                   description: 数据存储刷新任务uri
+              required:
+              - datastoreUrns
       responses:
         '200':
           description: 操作成功
@@ -29461,6 +29956,8 @@ paths:
                 ifConnectFlag:
                   type: boolean
                   description: 集群下该数据存储是否有卷绑定虚拟机，true表示有，false表示无。
+              required:
+              - clusterUrn
       responses:
         '200':
           description: 操作成功
@@ -29600,6 +30097,8 @@ paths:
                 taskUri:
                   type: string
                   description: 扩容数据存储任务对应的URI地址
+              required:
+              - storageUnitUrn
       responses:
         '200':
           description: 操作成功
@@ -30009,6 +30508,8 @@ paths:
                 taskUri:
                   type: string
                   description: vims心跳平面任务对应的URI地址
+              required:
+              - keyMode
       responses:
         '200':
           description: 操作成功
@@ -30158,6 +30659,8 @@ paths:
                 taskUri:
                   type: string
                   description: 解关联数据存储对应的任务uri
+              required:
+              - hostUrn
       responses:
         '200':
           description: 操作成功
@@ -30764,6 +31267,9 @@ paths:
                 taskUri:
                   type: string
                   description: 跨站点扩容数据存储DM设备对应的任务uri
+              required:
+              - suName
+              - expandStorageUnit
       responses:
         '200':
           description: 操作成功
@@ -31023,6 +31529,8 @@ paths:
                 msg:
                   type: string
                   description: 错误消息。
+              required:
+              - hostId
       responses:
         '200':
           description: 操作成功
@@ -31150,6 +31658,8 @@ paths:
                 result:
                   type: string
                   description: success
+              required:
+              - reclaimSpeed
       responses:
         '200':
           description: 操作成功
@@ -31222,6 +31732,9 @@ paths:
                 taskUri:
                   type: string
                   description: 批量删除总任务对应的URI地址。
+              required:
+              - hostUrn
+              - datastoreUrns
       responses:
         '200':
           description: 操作成功
@@ -31629,16 +32142,29 @@ paths:
                   value:
                     errorCode: '10410057'
                     message: 用户名密码错误。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "hostClusterIds":List{Long}
-    "hostIds":List{Long} "datastoreClusterType":String "name":String "limit":Integer "offset":Integer }'
+  ? '/datastores/querySingleInfo Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "hostClusterIds":List{Long} "hostIds":List{Long} "datastoreClusterType":String
+    "name":String "limit":Integer "offset":Integer }'
   : get:
       tags:
       - 数据存储管理
       summary: 查询给定主机集群与主机上所有指定类型的数据存储交集
-      operationId: getJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenHostclusteridsListLongHostidsListLongDatastoreclustertypeStringNameStringLimitIntegerOffsetInteger
+      operationId: getDatastoresQuerysingleinfoHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenHostclusteridsListLongHostidsListLongDatastoreclustertypeStringNameStringLimitIntegerOffsetInteger
       security:
       - X-Auth-Token: []
       parameters:
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -31771,6 +32297,8 @@ paths:
                 errorMsg:
                   type: string
                   description: 错误信息
+              required:
+              - isFrequencyReduce
       responses:
         '200':
           description: 操作成功
@@ -31954,6 +32482,8 @@ paths:
                 datastoreClusters:
                   type: string
                   description: datastoreNum
+              required:
+              - parentFolderUrn
       responses:
         '200':
           description: 操作成功
@@ -32203,6 +32733,11 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - quantityGB
+              - datastoreUrn
+              - uuid
+              - type
       responses:
         '200':
           description: 操作成功
@@ -32472,6 +33007,9 @@ paths:
                 volumes:
                   type: string
                   description: workloadTypeId
+              required:
+              - limit
+              - offset
       responses:
         '200':
           description: 操作成功
@@ -32992,6 +33530,10 @@ paths:
                 taskUri:
                   type: string
                   description: 迁移卷任务对应的URI地址
+              required:
+              - datastoreUrn
+              - speed
+              - isFrequencyReduce
       responses:
         '200':
           description: 操作成功
@@ -33261,6 +33803,10 @@ paths:
                 volumes:
                   type: string
                   description: storageProtocol
+              required:
+              - limit
+              - offset
+              - dsUrn
       responses:
         '200':
           description: 操作成功
@@ -33353,6 +33899,11 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - maxReadBytes
+              - maxWriteBytes
+              - maxReadRequest
+              - maxWriteRequest
       responses:
         '200':
           description: 操作成功
@@ -33426,6 +33977,8 @@ paths:
                 result:
                   type: string
                   description: 卷IO优先级修改结果
+              required:
+              - ioWeight
       responses:
         '200':
           description: 操作成功
@@ -33532,6 +34085,12 @@ paths:
                   type: array
                   description: 迁移后可支持的加密算法： {"0"} 非加密 {"1"} 分布式块存储XTS-AES-128算法加密 {"2"} 分布式块存储XTS-AES-256算法加密 {"0","1"，"2"}
                     可选，不加密、XTS-AES-128算法加密或XTS-AES-256算法加密
+              required:
+              - speed
+              - hostId
+              - volumes
+              - volumeId
+              - dstDs
       responses:
         '200':
           description: 操作成功
@@ -34237,6 +34796,8 @@ paths:
                 taskUri:
                   type: string
                   description: 表示扩容磁盘任务的URI地址。
+              required:
+              - size
       responses:
         '200':
           description: 操作成功
@@ -34410,6 +34971,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - imageLocationType
       responses:
         '200':
           description: 操作成功
@@ -34549,6 +35112,11 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - imageLocationType
+              - name
+              - url
+              - imageFormat
       responses:
         '200':
           description: 操作成功
@@ -34625,28 +35193,21 @@ paths:
                   value:
                     errorCode: 磁盘导出镜像失败，可能由网络异常导致，请排查。
                     message: 磁盘导出镜像失败，可能由网络异常导致，请排查。
-  ? '/json;version={version};charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { “volumes”: [ { "volumeUrn": string, "customProperties":
-    { string, string, string, string } } ] }'
-  : post:
+  /{vol_uri}/ properties/custom:
+    post:
       tags:
       - 卷管理
       summary: 设置卷的自定义属性
-      operationId: postJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenVolumesVolumeurnStringCustompropertiesStringStringStringString
+      operationId: postVol_uriPropertiesCustom
       security:
       - X-Auth-Token: []
       parameters:
-      - name: version
+      - name: vol_uri
         in: path
         required: true
         schema:
           type: string
-        description: 路径参数 version
-      - name: Authen_TOKEN
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 路径参数 Authen_TOKEN
+        description: 路径参数 vol_uri
       requestBody:
         required: true
         content:
@@ -34666,6 +35227,8 @@ paths:
                 customProperties:
                   type: object
                   description: 可选。每个卷的自定义属性数量不得超过10个，属性名称最多128个字符，属性值最多256个字符。可通过将指定自定义属性的值设置为空以删除相应自定义属性。
+              required:
+              - volumeUrn
       responses:
         '200':
           description: 操作成功
@@ -34696,28 +35259,21 @@ paths:
                   value:
                     errorCode: '10110001'
                     message: 目标对象设置的自定义属性数量超过限制
-  ? '/json;version={version};charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "condition": { "name": string, "value": string },
-    "limit": integer, "offset": integer }'
-  : post:
+  /{vol_uri}/queryby/custom-properties:
+    post:
       tags:
       - 卷管理
       summary: 根据自定义属性查询卷
-      operationId: postJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenConditionNameStringValueStringLimitIntegerOffsetInteger
+      operationId: postVol_uriQuerybyCustomProperties
       security:
       - X-Auth-Token: []
       parameters:
-      - name: version
+      - name: vol_uri
         in: path
         required: true
         schema:
           type: string
-        description: 路径参数 version
-      - name: Authen_TOKEN
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 路径参数 Authen_TOKEN
+        description: 路径参数 vol_uri
       requestBody:
         required: true
         content:
@@ -34749,6 +35305,10 @@ paths:
                 volumes:
                   type: string
                   description: standbyStorageVersion
+              required:
+              - condition
+              - name
+              - value
       responses:
         '200':
           description: 操作成功
@@ -34872,6 +35432,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - policy
       responses:
         '200':
           description: 操作成功
@@ -34947,6 +35509,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - queuesNum
       responses:
         '200':
           description: 操作成功
@@ -35019,6 +35583,8 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - volumeUrn
       responses:
         '200':
           description: 操作成功
@@ -35112,20 +35678,32 @@ paths:
                   value:
                     errorCode: '10411519'
                     message: 此数据存储不支持查询
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "clusterName":string,
-    / host urn "clusterType":string, "sdrsProps": { "drsKey": integer "isAuto": integer "iopsDrsKey": integer "sizeDrsKey":
-    integer "iopsThreshold": string "iopsDrsCycle": long "iopsDrsCycleTime": integer "storageThreshold": integer "storageDiffThreshold":
-    integer "refreshTime": date "executeTime": date "sdrsCycleType": byte "sdrsCycleSpec": string "sdrsFragmentLimen": string
-    } }'
+  ? '/datastore-cluster Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "clusterName":string, / host urn "clusterType":string, "sdrsProps": { "drsKey":
+    integer "isAuto": integer "iopsDrsKey": integer "sizeDrsKey": integer "iopsThreshold": string "iopsDrsCycle": long "iopsDrsCycleTime":
+    integer "storageThreshold": integer "storageDiffThreshold": integer "refreshTime": date "executeTime": date "sdrsCycleType":
+    byte "sdrsCycleSpec": string "sdrsFragmentLimen": string } }'
   : post:
       tags:
       - 数据存储集群管理
       summary: 创建数据存储集群
       description: 添加存储集群。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenClusternameStringHostUrnClustertypeStringSdrspropsDrskeyIntegerIsautoIntegerIopsdrskeyIntegerSizedrskeyIntegerIopsthresholdStringIopsdrscycleLongIopsdrscycletimeIntegerStoragethresholdIntegerStoragediffthresholdIntegerRefreshtimeDateExecutetimeDateSdrscycletypeByteSdrscyclespecStringSdrsfragmentlimenString
+      operationId: postDatastoreClusterHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenClusternameStringHostUrnClustertypeStringSdrspropsDrskeyIntegerIsautoIntegerIopsdrskeyIntegerSizedrskeyIntegerIopsthresholdStringIopsdrscycleLongIopsdrscycletimeIntegerStoragethresholdIntegerStoragediffthresholdIntegerRefreshtimeDateExecutetimeDateSdrscycletypeByteSdrscyclespecStringSdrsfragmentlimenString
       security:
       - X-Auth-Token: []
       parameters:
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -35207,17 +35785,29 @@ paths:
                   value:
                     errorCode: '10410487'
                     message: 数据存储集群不支持添加该类型的数据存储。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "id":integer,
-    / host urn "clusterName":string }'
+  ? '/datastore-cluster Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "id":integer, / host urn "clusterName":string }'
   : put:
       tags:
       - 数据存储集群管理
       summary: 编辑数据存储集群
       description: 编辑指定数据存储集群
-      operationId: putJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIdIntegerHostUrnClusternameString
+      operationId: putDatastoreClusterHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIdIntegerHostUrnClusternameString
       security:
       - X-Auth-Token: []
       parameters:
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -35285,16 +35875,35 @@ paths:
                   value:
                     errorCode: '11400000'
                     message: 参数错误
-  '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}':
-    delete:
+  ? '/datastore-cluster/{dsClusterId} Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN}'
+  : delete:
       tags:
       - 数据存储集群管理
       summary: 删除数据存储集群
       description: 删除存储集群。
-      operationId: deleteJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      operationId: deleteDatastoreClusterDsclusteridHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
       security:
       - X-Auth-Token: []
       parameters:
+      - name: dsClusterId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 dsClusterId
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -35345,72 +35954,6 @@ paths:
                   value:
                     errorCode: '10410488'
                     message: 数据存储集群不存在。
-    get:
-      tags:
-      - 监控
-      summary: 在TOP统计中查询某指标所支持的监控范围类型
-      description: 此接口用于在TOP统计中查询某指标所支持的监控范围类型
-      operationId: getJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
-      security:
-      - X-Auth-Token: []
-      parameters:
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 路径参数 version
-      - name: Authen_TOKEN
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 路径参数 Authen_TOKEN
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                metricId:
-                  type: string
-                  description: 指标ID
-                result:
-                  type: string
-                  description: 结果码
-                total:
-                  type: integer
-                  description: 监控范围数量
-                items:
-                  type: string
-                  description: 所有监控类型
-      responses:
-        '200':
-          description: 操作成功
-        '500':
-          description: HTTP 500 错误
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorCode:
-                    type: string
-                    description: 错误码
-                    example: '10000005'
-                  message:
-                    type: string
-                    description: 错误描述
-              examples:
-                err_10000005:
-                  value:
-                    errorCode: '10000005'
-                    message: VRM服务恢复中，请稍后重试。
-                err_11000020:
-                  value:
-                    errorCode: '11000020'
-                    message: 指标标识为空。
   /service/sites/{site_id}/clusters/{dscluster_id}:
     get:
       tags:
@@ -35503,17 +36046,99 @@ paths:
                   value:
                     errorCode: '11400000'
                     message: 参数错误
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "datastoreClusterId":integer
-    "datastoreIds":List{integer} }'
+  /datastore-cluster:
+    get:
+      tags:
+      - 数据存储集群管理
+      summary: 查询满足查询条件的数据存储集群信息交集
+      operationId: getDatastoreCluster
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                接口描述:
+                  type: string
+                  description: 接口描述
+                请求主体:
+                  type: string
+                  description: 请求主体
+                Integer:
+                  type: string
+                  description: 本次查询返回的数据存储集群信息总数
+                String:
+                  type: string
+                  description: 列表排序的依照属性，clusterType依照数据存储集群类型、name依照名称、dsTotalSize集群总容量、dsFreeSize集群可用容量、datastoreNum集群数据存储总数，默认按name名称排序
+                List<Integer>:
+                  type: string
+                  description: 可选，数据存储id列表，用以获取给定数据存储的推荐数据存储集群列表
+                响应主体:
+                  type: string
+                  description: 响应主体
+                Structure[]:
+                  type: string
+                  description: String
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '11400000'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_11400000:
+                  value:
+                    errorCode: '11400000'
+                    message: 参数错误。
+                err_10410006:
+                  value:
+                    errorCode: '10410006'
+                    message: 数据存储不存在
+                err_10000001:
+                  value:
+                    errorCode: '10000001'
+                    message: 请求消息格式非法
+                err_10400007:
+                  value:
+                    errorCode: '10400007'
+                    message: 数据库返回错误
+  ? '/datastore-cluster/datastores Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "datastoreClusterId":integer "datastoreIds":List{integer} }'
   : post:
       tags:
       - 数据存储集群管理
       summary: 移动数据存储集群中的数据存储
       description: 移动数据存储集群中的数据存储。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDatastoreclusteridIntegerDatastoreidsListInteger
+      operationId: postDatastoreClusterDatastoresHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDatastoreclusteridIntegerDatastoreidsListInteger
       security:
       - X-Auth-Token: []
       parameters:
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -35585,21 +36210,14 @@ paths:
                   value:
                     errorCode: '10410284'
                     message: 数据存储类型与目标数据存储集群类型不匹配。
-  '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: <Authen_TOKEN':
+  /datastore-cluster/storage/datastore-class/lighten:
     get:
       tags:
       - 数据存储集群管理
       summary: 获取轻量级存储资源相关信息
-      operationId: getJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      operationId: getDatastoreClusterStorageDatastoreClassLighten
       security:
       - X-Auth-Token: []
-      parameters:
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
-        description: 路径参数 version
       requestBody:
         required: true
         content:
@@ -35622,6 +36240,9 @@ paths:
                 Structure[]:
                   type: string
                   description: 单个数据存储集群中的数据存储轻量化信息列表，同上data中datastoreClusters，当storageClass为"datastore-cluster"时返回该结构体
+              required:
+              - String
+              - String
       responses:
         '200':
           description: 操作成功
@@ -35754,17 +36375,30 @@ paths:
                   value:
                     errorCode: '11400000'
                     message: 参数错误
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "id": "integer",
-    "drsKey": "integer", "isAuto": "integer", "storageThreshold": "integer", "storageDiffThreshold": "integer", "speed": "integer",
-    "sdrsCycleType": "byte", "sdrsCycleSpec": "string", "sdrsFragmentLimen": "string" }'
+  ? '/datastore-cluster/detail Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "id": "integer", "drsKey": "integer", "isAuto": "integer", "storageThreshold":
+    "integer", "storageDiffThreshold": "integer", "speed": "integer", "sdrsCycleType": "byte", "sdrsCycleSpec": "string",
+    "sdrsFragmentLimen": "string" }'
   : put:
       tags:
       - 数据存储集群管理
       summary: 修改数据存储集群的配置信息
-      operationId: putJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIdIntegerDrskeyIntegerIsautoIntegerStoragethresholdIntegerStoragediffthresholdIntegerSpeedIntegerSdrscycletypeByteSdrscyclespecStringSdrsfragmentlimenString
+      operationId: putDatastoreClusterDetailHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIdIntegerDrskeyIntegerIsautoIntegerStoragethresholdIntegerStoragediffthresholdIntegerSpeedIntegerSdrscycletypeByteSdrscyclespecStringSdrsfragmentlimenString
       security:
       - X-Auth-Token: []
       parameters:
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -35843,18 +36477,115 @@ paths:
                   value:
                     errorCode: '10410488'
                     message: 数据存储集群不存在
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { [{ "volumeId":
-    integer, "volumeName": string, "srcDatastoreId": integer, "srcDatastoreName": string, "desDatastoreId": integer, "desDatastoreName":
-    string, "createTime": string }] }'
+  ? '/datastore-cluster/{id}/advice Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN}'
+  : get:
+      tags:
+      - 数据存储集群管理
+      summary: 查询存储资源调度建议
+      description: 查询存储资源调度建议。
+      operationId: getDatastoreClusterIdAdviceHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 version
+      - name: Authen_TOKEN
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 Authen_TOKEN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 必传，集群id
+                total:
+                  type: integer
+                  description: 表示符合筛选条件的存储资源调度建议的数量
+                advices:
+                  type: string
+                  description: createTime
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '11400000'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_11400000:
+                  value:
+                    errorCode: '11400000'
+                    message: 参数错误。
+  ? '/datastore-cluster/{id}/execute Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { [{ "volumeId": integer, "volumeName": string, "srcDatastoreId": integer,
+    "srcDatastoreName": string, "desDatastoreId": integer, "desDatastoreName": string, "createTime": string }] }'
   : post:
       tags:
       - 数据存储集群管理
       summary: 执行存储资源调度建议
       description: 执行存储资源调度建议。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenVolumeidIntegerVolumenameStringSrcdatastoreidIntegerSrcdatastorenameStringDesdatastoreidIntegerDesdatastorenameStringCreatetimeString
+      operationId: postDatastoreClusterIdExecuteHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenVolumeidIntegerVolumenameStringSrcdatastoreidIntegerSrcdatastorenameStringDesdatastoreidIntegerDesdatastorenameStringCreatetimeString
       security:
       - X-Auth-Token: []
       parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -35924,6 +36655,235 @@ paths:
                   value:
                     errorCode: '10410504'
                     message: 数据存储集群配置容量开关未开启，不能执行此操作
+  ? '/datastore-cluster/{id}/history-tasks Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept:
+    application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}'
+  : get:
+      tags:
+      - 数据存储集群管理
+      summary: 分页查询存储资源调度历史
+      description: 分页查询存储资源调度历史。
+      operationId: getDatastoreClusterIdHistoryTasksHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 version
+      - name: Authen_TOKEN
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 Authen_TOKEN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 必传，集群id
+                volumeName:
+                  type: string
+                  description: 可选，磁盘名称，传空字符串时查询所有
+                limit:
+                  type: integer
+                  description: 可选，单页返回最大条目数，最大值100，不传默认100
+                offset:
+                  type: integer
+                  description: 可选，偏移量，不传默认0
+                total:
+                  type: integer
+                  description: 表示符合筛选条件的存储资源调度建议的数量
+                histories:
+                  type: string
+                  description: createTime
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '11400000'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_11400000:
+                  value:
+                    errorCode: '11400000'
+                    message: 参数错误。
+  /datastore-cluster/queryUsedDsOrDsCluster:
+    get:
+      tags:
+      - 数据存储集群管理
+      summary: 查询可以用来分发虚拟机的数据存储或数据存储集群
+      operationId: getDatastoreClusterQueryuseddsordscluster
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                查询可以用来分发虚拟机的数据存储或数据存储集群:
+                  type: string
+                  description: 查询可以用来分发虚拟机的数据存储或数据存储集群
+                请求主体:
+                  type: string
+                  description: 请求主体
+                Integer:
+                  type: string
+                  description: 本次查询返回的数据存储或数据存储集群集群信息总数
+                String:
+                  type: string
+                  description: 必选。scope为clusterUrn 或者 hostUrn。
+                响应主体:
+                  type: string
+                  description: 响应主体
+                Structure[]:
+                  type: array
+                  description: Structure[]
+              required:
+              - String
+              - Integer
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '11400000'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_11400000:
+                  value:
+                    errorCode: '11400000'
+                    message: 参数错误。
+                err_10400002:
+                  value:
+                    errorCode: '10400002'
+                    message: 输入参数不合法。
+                err_10000004:
+                  value:
+                    errorCode: '10000004'
+                    message: 操作数据库异常。
+  /datastore-cluster/queryStartingSuggestions:
+    get:
+      tags:
+      - 数据存储集群管理
+      summary: 分发虚拟机查询SDRS初始放置建议
+      operationId: getDatastoreClusterQuerystartingsuggestions
+      security:
+      - X-Auth-Token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                分发虚拟机查询SDRS初始放置建议:
+                  type: string
+                  description: 分发虚拟机查询SDRS初始放置建议
+                请求主体:
+                  type: string
+                  description: 请求主体
+                Integer:
+                  type: string
+                  description: 必选。scope为clusterUrn 或者 hostUrn。
+                list<Integer>:
+                  type: string
+                  description: 必选。磁盘大小列表，表示创建虚拟机时，需要创建的每个磁盘的大小。
+                响应主体:
+                  type: string
+                  description: 响应主体
+                List<Structure[]>:
+                  type: string
+                  description: Double
+              required:
+              - Integer
+              - Integer
+              - list<Integer>
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '11400000'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_11400000:
+                  value:
+                    errorCode: '11400000'
+                    message: 参数错误。
+                err_10000004:
+                  value:
+                    errorCode: '10000004'
+                    message: 操作数据库异常。
+                err_10400002:
+                  value:
+                    errorCode: '10400002'
+                    message: 输入参数不合法。
+                err_10410283:
+                  value:
+                    errorCode: '10410283'
+                    message: 数据存储集群不存在
+                err_10410234:
+                  value:
+                    errorCode: '10410234'
+                    message: 数据存储空间不足。
   /{uplinkport_uri}/{uplinkportid}:
     get:
       tags:
@@ -36626,6 +37586,10 @@ paths:
                 taskUri:
                   type: string
                   description: 修改网口聚合对应任务的 URI 地址
+              required:
+              - uplinkPortUrns
+              - operator
+              - primaryUplinkPortOp
       responses:
         '200':
           description: 操作成功
@@ -36969,6 +37933,16 @@ paths:
                 taskUri:
                   type: string
                   description: 创建系统接口对应任务的 URI 地址
+              required:
+              - name
+              - portUrn
+              - vlanId
+              - netAddr
+              - netMask
+              - netAddr6
+              - prefix
+              - multipleIpList
+              - mtu
       responses:
         '200':
           description: 操作成功
@@ -37294,6 +38268,9 @@ paths:
                 multipleIpList:
                   type: string
                   description: net6Prefix
+              required:
+              - netAddr6
+              - prefix
       responses:
         '200':
           description: 操作成功
@@ -37443,6 +38420,11 @@ paths:
                 taskUri:
                   type: string
                   description: 更新系统接口对应任务的 URI 地址
+              required:
+              - mtu
+              - netAddr6
+              - prefix
+              - multipleIpList
       responses:
         '200':
           description: 操作成功
@@ -38163,6 +39145,8 @@ paths:
                 正常时无响应正文:
                   type: string
                   description: 正常时无响应正文
+              required:
+              - hostPortSet
       responses:
         '200':
           description: 操作成功
@@ -38236,6 +39220,8 @@ paths:
                 正常时无响应正文:
                   type: string
                   description: 正常时无响应正文
+              required:
+              - hostPortSet
       responses:
         '200':
           description: 操作成功
@@ -38309,6 +39295,8 @@ paths:
                 正常时无响应正文:
                   type: string
                   description: 正常时无响应正文
+              required:
+              - vlanPoolSet
       responses:
         '200':
           description: 操作成功
@@ -38388,6 +39376,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务对应的 URI 地址
+              required:
+              - vlanPoolSet
       responses:
         '200':
           description: 操作成功
@@ -38929,6 +39919,12 @@ paths:
                 uri:
                   type: string
                   description: 端口组对应的URI地址
+              required:
+              - name
+              - muxVlan
+              - vlanId
+              - vlanRange
+              - txLimit
       responses:
         '200':
           description: 操作成功
@@ -39286,6 +40282,10 @@ paths:
                 taskUri:
                   type: string
                   description: 更新PortGroup对应任务的 URI 地址
+              required:
+              - vlanType
+              - muxVlan
+              - vlanRange
       responses:
         '200':
           description: 操作成功
@@ -39961,6 +40961,8 @@ paths:
                 sgId:
                   type: string
                   description: 安全组ID
+              required:
+              - sgName
       responses:
         '200':
           description: 操作成功
@@ -40039,6 +41041,8 @@ paths:
                 正常时无响应正文。:
                   type: string
                   description: 正常时无响应正文。
+              required:
+              - sgName
       responses:
         '200':
           description: 操作成功
@@ -40511,6 +41515,9 @@ paths:
                 interfaces:
                   type: string
                   description: interfaceName
+              required:
+              - deviceType
+              - deviceId
       responses:
         '200':
           description: 操作成功
@@ -40580,6 +41587,9 @@ paths:
                 taskUri:
                   type: string
                   description: 抓包任务对应任务中心的的uri地址
+              required:
+              - name
+              - conditions
       responses:
         '200':
           description: 操作成功
@@ -40646,6 +41656,8 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - netDumpUrnList
       responses:
         '200':
           description: 操作成功
@@ -40734,6 +41746,8 @@ paths:
                 netDumps:
                   type: string
                   description: interfaces
+              required:
+              - order
       responses:
         '200':
           description: 操作成功
@@ -41103,6 +42117,18 @@ paths:
                 无响应正文描述:
                   type: string
                   description: 无响应正文描述
+              required:
+              - taskId
+              - protocol
+              - siteType
+              - nextHopMac
+              - srcMac
+              - srcNicIp
+              - srcNicUrn
+              - dstMac
+              - dstNicIp
+              - dstNicUrn
+              - dstVmUrn
       responses:
         '200':
           description: 操作成功
@@ -41397,6 +42423,8 @@ paths:
                 checkResult:
                   type: string
                   description: checkDetail
+              required:
+              - remoteSiteUrn
       responses:
         '200':
           description: 操作成功
@@ -41519,6 +42547,11 @@ paths:
                 rightType:
                   type: integer
                   description: 账户安全类型。1：普通模式下的账户，2：高安全模式下系统管理员类账户，3：高安全模式下安全管理员类账户，4：高安全模式下安全审计员类账户
+              required:
+              - 无请求正文。请求消息头中可携带如下头域： Accept-Language语言类型。可选，默认中文。 X-Auth-User 用户名。必选。 X-Auth-Key 用户密码，密码传递方式根据X-ENCRYPT-ALGORITHM决定，默认使用SHA-256加密后传递。必选。
+                X-Auth-UserType用户类型（服务器整合场景使用），可选，默认对接账户。取值范围： “0”：本地帐户 “1”：域账户 “2”：对接账户 X-Auth-AuthType 认证类型，可选，默认本地认证。取值范围：
+                “0”：本地认证 “1”：级联域认证 X-ENCRYPT-ALGORITHM 用户密码加密方式，可选，默认为SHA-256加密。 “0”： 用户密码使用SHA-256加密。 “1”： 用户密码为明文。 登录后，Token有效期为600000ms，在此时间段内，可携带此Token请求其他资源，请勿频繁执行登录操作。
+                响应消息头中X-Auth-Token值为鉴权标识
       responses:
         '200':
           description: HTTP 200 错误
@@ -41695,6 +42728,22 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - Ldap-Ssl-Switch
+              - ldapMode
+              - baseDN
+              - bindDN
+              - userAndGroupSwitch
+              - userObjectClass
+              - userNameAttr
+              - groupBaseDN
+              - groupObjectClass
+              - groupName
+              - groupMembersAttr
+              - userName
+              - userVal
+              - userDNPattern
+              - ip
       responses:
         '200':
           description: 操作成功
@@ -41942,6 +42991,14 @@ paths:
                 userId:
                   type: string
                   description: 用户标识。
+              required:
+              - userType
+              - userName
+              - password
+              - roles
+              - email
+              - contact
+              - isActivateContact
       responses:
         '200':
           description: 操作成功
@@ -42137,6 +43194,9 @@ paths:
                 users:
                   type: string
                   description: userAclInfo
+              required:
+              - userId
+              - isActivateContact
       responses:
         '200':
           description: 操作成功
@@ -42242,6 +43302,9 @@ paths:
                 userName:
                   type: string
                   description: 用户名
+              required:
+              - roles
+              - isActivateContact
       responses:
         '200':
           description: 操作成功
@@ -42339,6 +43402,10 @@ paths:
                 在消息头中通过Accept-Language携带语言类型。 无响应正文。:
                   type: string
                   description: 在消息头中通过Accept-Language携带语言类型。 无响应正文。
+              required:
+              - userId
+              - oldPassword
+              - password
       responses:
         '200':
           description: 操作成功
@@ -42409,6 +43476,9 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - userId
+              - password
       responses:
         '200':
           description: 操作成功
@@ -42557,6 +43627,8 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - roleName
       responses:
         '200':
           description: 操作成功
@@ -42635,6 +43707,8 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - roleName
       responses:
         '200':
           description: 操作成功
@@ -42707,6 +43781,8 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - roleName
       responses:
         '200':
           description: 操作成功
@@ -43063,6 +44139,9 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - roles
+              - rightType
       responses:
         '200':
           description: 操作成功
@@ -43370,17 +44449,180 @@ paths:
                   value:
                     errorCode: '10100379'
                     message: 修改端口绑定策略失败。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "action":
-    "monitor manager", "type": "monitor", "object": "" }'
+  /{site_uri}/{site_id} /snmp/{id}:
+    get:
+      tags:
+      - 用户与角色管理
+      summary: 通过ID查询SNMP服务器配置
+      description: 此接口用于通过ID查询SNMP服务器配置。
+      operationId: getSite_uriSite_idSnmpId
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                snmpServerConfigId:
+                  type: string
+                  description: SNMP服务器配置ID。
+                id:
+                  type: string
+                  description: SNMP服务器配置ID。
+                moduleList:
+                  type: string
+                  description: 模式列表。
+                snmpMgrName:
+                  type: string
+                  description: SNMP管理站名称。
+                readName:
+                  type: string
+                  description: '-'
+                writeName:
+                  type: string
+                  description: '-'
+                snmpVersion:
+                  type: integer
+                  description: SNMP版本
+                port:
+                  type: integer
+                  description: 端口
+                srcPort:
+                  type: integer
+                  description: '-'
+                ip:
+                  type: string
+                  description: IP地址
+                userName:
+                  type: string
+                  description: 用户名
+                outTime:
+                  type: integer
+                  description: 超时时间
+                transType:
+                  type: string
+                  description: 通信协议类型
+                authGeneric:
+                  type: string
+                  description: '-'
+                privacyProtocol:
+                  type: string
+                  description: 加密协议
+                lan:
+                  type: string
+                  description: '-'
+                indexValues:
+                  type: string
+                  description: '-'
+                alarmSyncNum:
+                  type: integer
+                  description: '-'
+                description:
+                  type: string
+                  description: 描述信息
+                dataType:
+                  type: integer
+                  description: 数据类型
+                reserved2:
+                  type: integer
+                  description: '-'
+                svreserved1:
+                  type: string
+                  description: '-'
+                svreserved2:
+                  type: string
+                  description: '-'
+      responses:
+        '200':
+          description: 操作成功
+        '500':
+          description: HTTP 500 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '10000005'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_10000005:
+                  value:
+                    errorCode: '10000005'
+                    message: VRM服务恢复中，请稍后重试。
+                err_11000020:
+                  value:
+                    errorCode: '11000020'
+                    message: 指标标识为空。
+                err_11000019:
+                  value:
+                    errorCode: '11000019'
+                    message: 用户信息不存在，请重新登录。
+                err_11000031:
+                  value:
+                    errorCode: '11000031'
+                    message: 更新数据失败，请稍后重试。
+  ? '/{site_uri}/{site_id} /authenticate/authenticateByAction Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "action": "monitor manager",
+    "type": "monitor", "object": "" }'
   : post:
       tags:
       - 用户与角色管理
       summary: 鉴权接口
       description: 此接口用于鉴权。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenActionMonitorManagerTypeMonitorObject
+      operationId: postSite_uriSite_idAuthenticateAuthenticatebyactionHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenActionMonitorManagerTypeMonitorObject
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -43443,17 +44685,42 @@ paths:
                   value:
                     errorCode: '10100130'
                     message: 操作对象不合法。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "domainName"
-    : "domainTest", "description" : "test domain", "userList" : ["testUser"], "modifyType" : "resource" }'
+  ? '/{site_uri}/{site_id} /domains/mod Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "domainName" : "domainTest", "description" : "test domain", "userList" :
+    ["testUser"], "modifyType" : "resource" }'
   : post:
       tags:
       - 用户与角色管理
       summary: 更新域配置
       description: 此接口用于更新域配置
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDomainnameDomaintestDescriptionTestDomainUserlistTestuserModifytypeResource
+      operationId: postSite_uriSite_idDomainsModHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDomainnameDomaintestDescriptionTestDomainUserlistTestuserModifytypeResource
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -43609,17 +44876,41 @@ paths:
                   value:
                     errorCode: '12000004'
                     message: 域不存在
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "domainName"
-    : "testDomain" }'
+  ? '/{site_uri}/{site_id} /domains/rmv Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "domainName" : "testDomain" }'
   : post:
       tags:
       - 用户与角色管理
       summary: 删除域配置
       description: 此接口用于删除域配置
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDomainnameTestdomain
+      operationId: postSite_uriSite_idDomainsRmvHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenDomainnameTestdomain
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -43680,18 +44971,30 @@ paths:
                   value:
                     errorCode: '12000001'
                     message: 内置域不能删除
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "ip" :
-    "170.36.7.77", "isSelf" : true, "scrtCode" : "weihua@123", "token" : "CB46D5D3BBD3597310EB1A6BE242A1E05C414D470E4307C00",
-    "type" : "1", "userName" : "admin1", "userType" : "2" }'
+  ? '/sso/addSsoServer Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept: application/json;version={version};
+    charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "ip" : "170.36.7.77", "isSelf" : true, "scrtCode" : "weihua@123", "token"
+    : "CB46D5D3BBD3597310EB1A6BE242A1E05C414D470E4307C00", "type" : "1", "userName" : "admin1", "userType" : "2" }'
   : post:
       tags:
       - 用户与角色管理
       summary: 添加单点登录服务器
       description: 此接口用于添加单点登录服务器。
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIpIsselfTrueScrtcodeWeihuaTokenCb46d5d3bbd3597310eb1a6be242a1e05c414d470e4307c00TypeUsernameAdmin1Usertype
+      operationId: postSsoAddssoserverHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenIpIsselfTrueScrtcodeWeihuaTokenCb46d5d3bbd3597310eb1a6be242a1e05c414d470e4307c00TypeUsernameAdmin1Usertype
       security:
       - X-Auth-Token: []
       parameters:
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -43871,6 +45174,8 @@ paths:
                 signedData:
                   type: string
                   description: 从制证工具中获取到的P7签名信息，必选。
+              required:
+              - signedData
       responses:
         '200':
           description: 操作成功
@@ -43934,6 +45239,8 @@ paths:
                 signedData:
                   type: string
                   description: 从制证工具中获取到的P7签名信息，必选。
+              required:
+              - signedData
       responses:
         '200':
           description: 操作成功
@@ -44003,6 +45310,8 @@ paths:
                 data:
                   type: array
                   description: cnName
+              required:
+              - csr
       responses:
         '200':
           description: 操作成功
@@ -44071,6 +45380,8 @@ paths:
                 data:
                   type: array
                   description: cnName
+              required:
+              - csr
       responses:
         '200':
           description: 操作成功
@@ -44289,6 +45600,8 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -44370,6 +45683,8 @@ paths:
                 data:
                   type: array
                   description: appName
+              required:
+              - name
       responses:
         '200':
           description: 操作成功
@@ -44437,6 +45752,9 @@ paths:
                 data:
                   type: string
                   description: 响应内容。
+              required:
+              - code
+              - userName
       responses:
         '200':
           description: 操作成功
@@ -44494,6 +45812,9 @@ paths:
                 items:
                   type: array
                   description: value
+              required:
+              - urn
+              - metricId
       responses:
         '200':
           description: 操作成功
@@ -44576,6 +45897,12 @@ paths:
                 items:
                   type: array
                   description: metricValue
+              required:
+              - urn
+              - metricId
+              - startTime
+              - endTime
+              - interval
       responses:
         '200':
           description: 操作成功
@@ -44671,6 +45998,16 @@ paths:
                 items:
                   type: array
                   description: metricValue
+              required:
+              - urn
+              - metricId
+              - objectType
+              - topN
+              - topOrder
+              - topType
+              - startTime
+              - endTime
+              - interval
       responses:
         '200':
           description: HTTP 200 错误
@@ -44748,17 +46085,42 @@ paths:
       responses:
         '200':
           description: 操作成功
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "vms":
-    [ { "peakStatistic": false } ] }'
+  ? '/{site_uri}/{site_id}/monitors/setMonitorStatisticMethod Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "vms": [ { "peakStatistic": false
+    } ] }'
   : post:
       tags:
       - 监控
       summary: 配置监控统计方法
       description: 此接口用于配置监控统计方法，当前只支持配置虚拟机监控统计方法
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenVmsPeakstatisticFalse
+      operationId: postSite_uriSite_idMonitorsSetmonitorstatisticmethodHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenVmsPeakstatisticFalse
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -44822,7 +46184,109 @@ paths:
                   value:
                     errorCode: '11000000'
                     message: 系统内部异常，请联系技术支持人员
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "objectType":"Host",
+  ? '/{site_uri}/{site_id}/monitors/getMonitorStatisticMethod Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}'
+  : get:
+      tags:
+      - 监控
+      summary: 查询监控统计方法
+      description: 此接口用于查询监控统计方法
+      operationId: getSite_uriSite_idMonitorsGetmonitorstatisticmethodHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 version
+      - name: Authen_TOKEN
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 Authen_TOKEN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                无请求正文:
+                  type: string
+                  description: 无请求正文
+                vms:
+                  type: string
+                  description: peakStatistic
+      responses:
+        '200':
+          description: 操作成功
+        '400':
+          description: HTTP 400 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '10000001'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_10000001:
+                  value:
+                    errorCode: '10000001'
+                    message: 请求消息格式非法
+        '500':
+          description: HTTP 500 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '11000000'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_11000000:
+                  value:
+                    errorCode: '11000000'
+                    message: 系统内部异常，请联系技术支持人员
+  ? '/{site_uri}/{site_id}/monitors/SingleObjectManyMetric/user-objects Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "objectType":"Host",
     "urns":["urn:sites:366806CD:hosts:176"], "ruleList":[{"urn":"urn:sites:366806CD:hosts:176", "metricIds":["cpu_usage","dom0_cpu_usage","dom0_mem_usage","domU_cpu_usage","domU_mem_usage","mem_usage"],
     "ruleName":"默认监控指标1"}] }'
   : post:
@@ -44830,10 +46294,34 @@ paths:
       - 监控
       summary: 增加单对象多指标监控对象
       description: 此接口用于增加单对象多指标监控对象
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenObjecttypeHostUrnsUrnSitesCdHostsRulelistUrnUrnSitesCdHostsMetricidsCpu_usageDom0_cpu_usageDom0_mem_usageDomu_cpu_usageDomu_mem_usageMem_usageRulename
+      operationId: postSite_uriSite_idMonitorsSingleobjectmanymetricUserObjectsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenObjecttypeHostUrnsUrnSitesCdHostsRulelistUrnUrnSitesCdHostsMetricidsCpu_usageDom0_cpu_usageDom0_mem_usageDomu_cpu_usageDomu_mem_usageMem_usageRulename
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -44887,17 +46375,42 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "objectType":"Host",
+  ? '/{site_uri}/{site_id} /monitors/SingleObjectManyMetric/userobject Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "objectType":"Host",
     "urn":"urn:sites:366806CD:hosts:176" }'
   : post:
       tags:
       - 监控
       summary: 删除单对象多指标监控对象
       description: 此接口用于删除单对象多指标监控对象
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenObjecttypeHostUrnUrnSitesCdHosts
+      operationId: postSite_uriSite_idMonitorsSingleobjectmanymetricUserobjectHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenObjecttypeHostUrnUrnSitesCdHosts
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -44926,17 +46439,130 @@ paths:
       responses:
         '200':
           description: 操作成功
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [{"urn":"urn:sites:366806CD:hosts:190",
+  ? '/{site_uri}/{site_id} /monitors/SingleObjectManyMetric/userobject-usermetrics Host: https:/{ip}:{port} Content-Type:
+    application/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}'
+  : get:
+      tags:
+      - 监控
+      summary: 单对象多指标，查询某对象的规则
+      description: 此接口用于单对象多指标，查询某对象的规则
+      operationId: getSite_uriSite_idMonitorsSingleobjectmanymetricUserobjectUsermetricsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 version
+      - name: Authen_TOKEN
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 Authen_TOKEN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                无请求正文:
+                  type: string
+                  description: 无请求正文
+                result:
+                  type: string
+                  description: 结果
+                total:
+                  type: integer
+                  description: 规则数目
+                items:
+                  type: string
+                  description: metricList
+      responses:
+        '200':
+          description: 操作成功
+        '500':
+          description: HTTP 500 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '10000005'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_10000005:
+                  value:
+                    errorCode: '10000005'
+                    message: VRM服务恢复中，请稍后重试。
+  ? '/{site_uri}/{site_id}/monitors/SingleObjectManyMetric/userobject-usermetrics Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [{"urn":"urn:sites:366806CD:hosts:190",
     "ruleName":"aa", "metricIds":["cpu_usage"]}]'
   : post:
       tags:
       - 监控
       summary: 单对象多指标，给某对象添加指标
       description: 此接口用于单对象多指标，给某对象添加指标
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesCdHostsRulenameAaMetricidsCpu_usage
+      operationId: postSite_uriSite_idMonitorsSingleobjectmanymetricUserobjectUsermetricsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesCdHostsRulenameAaMetricidsCpu_usage
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -44990,17 +46616,42 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [{"urn":"urn:sites:366806CD:hosts:176",
-    "ruleName":"默认监控指标1", "metricIds":["cpu_usage","dom0_cpu_usage","dom0_mem_usage","domU_mem_usage","mem_usage","logic_disk_usage"]}]'
+  ? '/{site_uri}/{site_id} /monitors/SingleObjectManyMetric/modify-userobject-usermetrics Host: https:/{ip}:{port} Content-Type:
+    application/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}
+    [{"urn":"urn:sites:366806CD:hosts:176", "ruleName":"默认监控指标1", "metricIds":["cpu_usage","dom0_cpu_usage","dom0_mem_usage","domU_mem_usage","mem_usage","logic_disk_usage"]}]'
   : post:
       tags:
       - 监控
       summary: 单对象多指标，修改某对象的规则
       description: 此接口用于单指标指标多对象，修改某对象的规则
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesCdHostsRulenameMetricidsCpu_usageDom0_cpu_usageDom0_mem_usageDomu_mem_usageMem_usageLogic_disk_usage
+      operationId: postSite_uriSite_idMonitorsSingleobjectmanymetricModifyUserobjectUsermetricsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesCdHostsRulenameMetricidsCpu_usageDom0_cpu_usageDom0_mem_usageDomu_mem_usageMem_usageLogic_disk_usage
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45054,16 +46705,42 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [{"ruleList":["b"],"urn":"urn:sites:366806CD:hosts:176"}]'
+  ? '/{site_uri}/{site_id} /monitors/SingleObjectManyMetric/delete-userobject-usermetrics Host: https:/{ip}:{port} Content-Type:
+    application/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}
+    [{"ruleList":["b"],"urn":"urn:sites:366806CD:hosts:176"}]'
   : post:
       tags:
       - 监控
       summary: 单对象多指标，删除某对象的规则
       description: 此接口用于单指标指标多对象，删除某对象的规则
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulelistBUrnUrnSitesCdHosts
+      operationId: postSite_uriSite_idMonitorsSingleobjectmanymetricDeleteUserobjectUsermetricsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulelistBUrnUrnSitesCdHosts
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45114,17 +46791,42 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "ruleName":"a",
+  ? '/{site_uri}/{site_id} /monitors/SingleMetricManyObject/metric-userobjects Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "ruleName":"a",
     "metricId":"cpu_usage", "object":[{"objectType":"Host","urn":["urn:sites:366806CD:hosts:176"]}] }'
   : post:
       tags:
       - 监控
       summary: 在单指标多对象中给某个指标添加对象
       description: 此接口用于在单指标多对象中给某个指标添加对象
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulenameAMetricidCpu_usageObjectObjecttypeHostUrnUrnSitesCdHosts
+      operationId: postSite_uriSite_idMonitorsSinglemetricmanyobjectMetricUserobjectsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulenameAMetricidCpu_usageObjectObjecttypeHostUrnUrnSitesCdHosts
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45178,18 +46880,43 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "ruleName":"aaa",
-    "metricId":"cpu_usage", "object":[{"objectType":"Host","urn":["urn:sites:366806CD:hosts:176"]},{"objectType":"Host","urn":["urn:sites:366806CD:hosts:190"]}]
+  ? '/{site_uri}/{site_id} /monitors/SingleMetricManyObject/modify-metric-userobjects Host: https:/{ip}:{port} Content-Type:
+    application/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}
+    { "ruleName":"aaa", "metricId":"cpu_usage", "object":[{"objectType":"Host","urn":["urn:sites:366806CD:hosts:176"]},{"objectType":"Host","urn":["urn:sites:366806CD:hosts:190"]}]
     }'
   : post:
       tags:
       - 监控
       summary: 在单指标多对象中修改某指标的规则
       description: 此接口用于在单指标多对象中修改某指标的规则
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulenameAaaMetricidCpu_usageObjectObjecttypeHostUrnUrnSitesCdHostsObjecttypeHostUrnUrnSitesCdHosts
+      operationId: postSite_uriSite_idMonitorsSinglemetricmanyobjectModifyMetricUserobjectsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulenameAaaMetricidCpu_usageObjectObjecttypeHostUrnUrnSitesCdHostsObjecttypeHostUrnUrnSitesCdHosts
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45243,17 +46970,42 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "ruleName":"aaa",
-    "metricId":"cpu_usage" }'
+  ? '/{site_uri}/{site_id} /monitors/SingleMetricManyObject/delete-usermetric-rule Host: https:/{ip}:{port} Content-Type:
+    application/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}
+    { "ruleName":"aaa", "metricId":"cpu_usage" }'
   : post:
       tags:
       - 监控
       summary: 在单指标多对象中删除某指标的规则
       description: 此接口用于在单指标多对象中删除某指标的规则
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulenameAaaMetricidCpu_usage
+      operationId: postSite_uriSite_idMonitorsSinglemetricmanyobjectDeleteUsermetricRuleHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenRulenameAaaMetricidCpu_usage
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45304,17 +47056,108 @@ paths:
                   value:
                     errorCode: '10000005'
                     message: VRM服务恢复中，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ "mem_usage"
-    ]'
+  /{site_uri}/{site_id} /monitors/TopoStatistic/top-metric-allobjecttype:
+    get:
+      tags:
+      - 监控
+      summary: 在TOP统计中查询某指标所支持的监控范围类型
+      description: 此接口用于在TOP统计中查询某指标所支持的监控范围类型
+      operationId: getSite_uriSite_idMonitorsTopostatisticTopMetricAllobjecttype
+      security:
+      - X-Auth-Token: []
+      parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metricId:
+                  type: string
+                  description: 指标ID
+                result:
+                  type: string
+                  description: 结果码
+                total:
+                  type: integer
+                  description: 监控范围数量
+                items:
+                  type: string
+                  description: 所有监控类型
+      responses:
+        '200':
+          description: 操作成功
+        '500':
+          description: HTTP 500 错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: string
+                    description: 错误码
+                    example: '10000005'
+                  message:
+                    type: string
+                    description: 错误描述
+              examples:
+                err_10000005:
+                  value:
+                    errorCode: '10000005'
+                    message: VRM服务恢复中，请稍后重试。
+                err_11000020:
+                  value:
+                    errorCode: '11000020'
+                    message: 指标标识为空。
+  ? '/{site_uri}/{site_id} /monitors/TopoStatistic/top-usermetrics Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ "mem_usage" ]'
   : post:
       tags:
       - 监控
       summary: 在TOP统计中新增指标
       description: 此接口用于在TOP统计中新增指标
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenMem_usage
+      operationId: postSite_uriSite_idMonitorsTopostatisticTopUsermetricsHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenMem_usage
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45374,17 +47217,42 @@ paths:
                   value:
                     errorCode: '11000031'
                     message: 更新数据失败，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "urn":
-    "urn:sites:FD450E68:vms:i-00000002", "metricId": "mem_usage", "objectType": "VM" }'
+  ? '/{site_uri}/{site_id} /monitors/TopoStatistic/top-usermetric-range Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "urn": "urn:sites:FD450E68:vms:i-00000002",
+    "metricId": "mem_usage", "objectType": "VM" }'
   : post:
       tags:
       - 监控
       summary: 在TOP统计中删除某指标的监控范围
       description: 此接口用于在TOP统计中删除指标
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesFd450e68VmsIMetricidMem_usageObjecttypeVm
+      operationId: postSite_uriSite_idMonitorsTopostatisticTopUsermetricRangeHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesFd450e68VmsIMetricidMem_usageObjecttypeVm
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45454,17 +47322,42 @@ paths:
                   value:
                     errorCode: '11000030'
                     message: 对象类型不合法。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "objectRange":
+  ? '/{site_uri}/{site_id} /monitors/TopoStatistic/top-userrange Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "objectRange":
     [ "VM", "Host", "Cluster" ], "metricId": "mem_usage", "objectType": "VM" }'
   : post:
       tags:
       - 监控
       summary: 在TOP统计中对某个指标添加范围
       description: 此接口用于在TOP统计中对某个指标添加范围
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenObjectrangeVmHostClusterMetricidMem_usageObjecttypeVm
+      operationId: postSite_uriSite_idMonitorsTopostatisticTopUserrangeHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenObjectrangeVmHostClusterMetricidMem_usageObjecttypeVm
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45534,17 +47427,42 @@ paths:
                   value:
                     errorCode: '11000030'
                     message: 对象类型不合法。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "metricId":
-    "mem_usage" }'
+  ? '/{site_uri}/{site_id} /monitors/TopoStatistic/top-usermetric Host: https:/{ip}:{port} Content-Type: application/json;
+    charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { "metricId": "mem_usage"
+    }'
   : post:
       tags:
       - 监控
       summary: 在TOP统计中删除指标
       description: 此接口用于在TOP统计中删除指标
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenMetricidMem_usage
+      operationId: postSite_uriSite_idMonitorsTopostatisticTopUsermetricHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenMetricidMem_usage
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45604,17 +47522,42 @@ paths:
                   value:
                     errorCode: '11000031'
                     message: 更新数据失败，请稍后重试。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ "urn:sites:FD450E68:vms:i-00000002"
+  ? '/{site_uri}/{site_id} /monitors/cleanUpUserDefine Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ "urn:sites:FD450E68:vms:i-00000002"
     ]'
   : post:
       tags:
       - 监控
       summary: 自定义监控，关联清理
       description: 此接口用于自定义监控，关联清理
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnSitesFd450e68VmsI
+      operationId: postSite_uriSite_idMonitorsCleanupuserdefineHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnSitesFd450e68VmsI
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45670,16 +47613,41 @@ paths:
                   value:
                     errorCode: '11000031'
                     message: 更新数据失败，请稍后重试
-  '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ "001" ]':
-    post:
+  ? '/{site_uri}/{site_id} /monitors/cleanUpUserInfo Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ "001" ]'
+  : post:
       tags:
       - 监控
       summary: 清除自定义监控中含有这些对象的内容
       description: 此接口用于清除自定义监控中对应用户创建的内容
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
+      operationId: postSite_uriSite_idMonitorsCleanupuserinfoHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_token
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45735,17 +47703,42 @@ paths:
                   value:
                     errorCode: '11000031'
                     message: 更新数据失败，请稍后重试
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ { "urn":"urn:sites:FD450E68:vms:i-00000002",
+  ? '/{site_uri}/{site_id} /monitors/datastoresHistoryData Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ { "urn":"urn:sites:FD450E68:vms:i-00000002",
     "metricId":"mem_usage", "startTime":"2022092500", "endTime":"2022092599", "interval":"1800" } ]'
   : post:
       tags:
       - 监控
       summary: 查询历史监控数据
       description: 此接口用于查询历史监控数据
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesFd450e68VmsIMetricidMem_usageStarttimeEndtimeInterval
+      operationId: postSite_uriSite_idMonitorsDatastoreshistorydataHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesFd450e68VmsIMetricidMem_usageStarttimeEndtimeInterval
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45852,18 +47845,42 @@ paths:
                   value:
                     errorCode: '11000047'
                     message: 时间格式不合法。
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ { "operateId":"1",
-    "urn":"urn:sites:FD450E68:clusters:117", "metricId":"cpu_usage", "startTime":"1664175907", "endTime":"1664179507", "interval":"60"
-    } ]'
+  ? '/{site_uri}/{site_id} /monitors/curvedata-analyzer Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ { "operateId":"1", "urn":"urn:sites:FD450E68:clusters:117",
+    "metricId":"cpu_usage", "startTime":"1664175907", "endTime":"1664179507", "interval":"60" } ]'
   : post:
       tags:
       - 监控
       summary: 获取指标的监控数据
       description: 此接口用于获取指标的监控数据
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenOperateidUrnUrnSitesFd450e68ClustersMetricidCpu_usageStarttimeEndtimeInterval
+      operationId: postSite_uriSite_idMonitorsCurvedataAnalyzerHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenOperateidUrnUrnSitesFd450e68ClustersMetricidCpu_usageStarttimeEndtimeInterval
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -45956,17 +47973,42 @@ paths:
                   value:
                     errorCode: '11000041'
                     message: 查询数据失败，请稍后重试
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ { "urn":"urn:sites:FD450E68:clusters:117",
+  ? '/{site_uri}/{site_id} /monitors/realCacheData Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8
+    Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} [ { "urn":"urn:sites:FD450E68:clusters:117",
     "metricId":"cpu_usage" } ]'
   : post:
       tags:
       - 监控
       summary: 查询历史监控数据
       description: 此接口用于查询历史监控数据
-      operationId: postJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesFd450e68ClustersMetricidCpu_usage
+      operationId: postSite_uriSite_idMonitorsRealcachedataHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenUrnUrnSitesFd450e68ClustersMetricidCpu_usage
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -46356,6 +48398,8 @@ paths:
                 items:
                   type: string
                   description: objectType
+              required:
+              - serialNo
       responses:
         '200':
           description: 操作成功
@@ -46515,6 +48559,8 @@ paths:
                 items:
                   type: string
                   description: dateType
+              required:
+              - moduleList
       responses:
         '200':
           description: 操作成功
@@ -46618,6 +48664,22 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - snmpMgrName
+              - moduleList
+              - ip
+              - port
+              - snmpVersion
+              - readName
+              - writeName
+              - userName
+              - authGeneric
+              - authmima
+              - privacyProtocol
+              - privmima
+              - outTime
+              - dateType
+              - alarmCodeFormat
       responses:
         '200':
           description: 操作成功
@@ -46728,6 +48790,21 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - id
+              - snmpMgrName
+              - moduleList
+              - ip
+              - port
+              - snmpVersion
+              - readName
+              - writeName
+              - userName
+              - authGeneric
+              - privacyProtocol
+              - outTime
+              - dateType
+              - alarmCodeFormat
       responses:
         '200':
           description: 操作成功
@@ -46857,6 +48934,12 @@ paths:
                 alarmIDList:
                   type: object
                   description: 告警列表，可选
+              required:
+              - siteID
+              - orderName
+              - startTime
+              - endTime
+              - orderType
       responses:
         '200':
           description: 操作成功
@@ -46926,6 +49009,10 @@ paths:
                 startupFlag:
                   type: integer
                   description: 告警订阅状态，必选；1激活；0禁止
+              required:
+              - siteID
+              - orderName
+              - startupFlag
       responses:
         '200':
           description: 操作成功
@@ -46989,6 +49076,8 @@ paths:
                 siteID:
                   type: string
                   description: 名称，必选，长度1~256，同一级目录下名称不能重复
+              required:
+              - siteID
       responses:
         '200':
           description: 操作成功
@@ -47055,6 +49144,9 @@ paths:
                 orderName:
                   type: string
                   description: 告警名称，必选，长度1~32
+              required:
+              - siteID
+              - orderName
       responses:
         '200':
           description: 操作成功
@@ -47124,6 +49216,10 @@ paths:
                 limit:
                   type: integer
                   description: 每页数量，必选，最小值为1
+              required:
+              - order[]
+              - offset
+              - limit
       responses:
         '200':
           description: 操作成功
@@ -47202,6 +49298,12 @@ paths:
                 alarmIDList:
                   type: object
                   description: 告警列表，可选
+              required:
+              - siteID
+              - orderName
+              - startTime
+              - endTime
+              - orderType
       responses:
         '200':
           description: 操作成功
@@ -47268,6 +49370,9 @@ paths:
                 orderName:
                   type: string
                   description: 告警名称，必选，长度1~32
+              required:
+              - siteID
+              - orderName
       responses:
         '200':
           description: 操作成功
@@ -47331,6 +49436,8 @@ paths:
                 siteID:
                   type: string
                   description: 名称，必选，长度1~256，同一级目录下名称不能重复
+              required:
+              - siteID
       responses:
         '200':
           description: 操作成功
@@ -47403,6 +49510,10 @@ paths:
                 description:
                   type: string
                   description: 描述,可选，最大长度512
+              required:
+              - ruleMode
+              - alarmId
+              - objectUrn
       responses:
         '200':
           description: 操作成功
@@ -47469,6 +49580,8 @@ paths:
                 id:
                   type: string
                   description: 描述，不支持换行符。可选
+              required:
+              - site_id
       responses:
         '200':
           description: 操作成功
@@ -47528,6 +49641,8 @@ paths:
                 popedom:
                   type: string
                   description: 权限标识列表，（查询权限列表返回item 的 rightId），可选
+              required:
+              - roleName
       responses:
         '200':
           description: 操作成功
@@ -47706,6 +49821,8 @@ paths:
                 obectjPrivs:
                   type: string
                   description: privName
+              required:
+              - objectType
       responses:
         '200':
           description: 操作成功
@@ -47746,6 +49863,10 @@ paths:
                 无响应正文。:
                   type: string
                   description: 无响应正文。
+              required:
+              - objectId
+              - privs
+              - objectType
       responses:
         '200':
           description: 操作成功
@@ -47776,16 +49897,41 @@ paths:
                   value:
                     errorCode: '10000008'
                     message: 当前操作对象不存在，请刷新后重试。
-  '/json;version={version}; charset=UTF-8 Content-Type: application/json; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}':
-    get:
+  ? '/{objectprivs_uri}/{objectId}HTTP/1.1 Host: https:/{ip}:{port} Accept: application/json;version={version}; charset=UTF-8
+    Content-Type: application/json; charset=UTF-8 X-Auth-Token: {Authen_TOKEN}'
+  : get:
       tags:
       - 对象权限管理
       summary: 查询对象持有的不可操作的权限
       description: 查询对象持有的不可操作权限列表
-      operationId: getJsonVersionVersionCharsetUtfContentTypeApplicationJsonCharsetUtfXAuthTokenAuthen_token
+      operationId: getObjectprivs_uriObjectidHttpHostHttpsIpPortAcceptApplicationJsonVersionVersionCharsetUtfContentTypeApplicationJsonCharsetUtfXAuthTokenAuthen_token
       security:
       - X-Auth-Token: []
       parameters:
+      - name: objectprivs_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 objectprivs_uri
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 objectId
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -47814,6 +49960,8 @@ paths:
                 obectjPrivs:
                   type: string
                   description: privName
+              required:
+              - objectId
       responses:
         '200':
           description: 操作成功
@@ -47933,6 +50081,9 @@ paths:
                 silenceUpgradeInterval:
                   type: string
                   description: 虚拟机插件静默升级轮询间隔时间，必选。 整数字符串格式，取值范围[30，43200]，单位为分钟。
+              required:
+              - silenceUpgradeSwitch
+              - silenceUpgradeInterval
       responses:
         '200':
           description: 操作成功
@@ -48998,6 +51149,9 @@ paths:
                 items:
                   type: string
                   description: opResult
+              required:
+              - offset
+              - limit
       responses:
         '200':
           description: 操作成功
@@ -49096,6 +51250,8 @@ paths:
                 filePath:
                   type: string
                   description: 导出目录
+              required:
+              - exportFlag
       responses:
         '200':
           description: 操作成功
@@ -49610,6 +51766,16 @@ paths:
                 periods:
                   type: integer
                   description: 备份时间，单位（天），范围1-65535，必选
+              required:
+              - isUploadtoFtp
+              - ftpuserName
+              - ftpPwd
+              - ftpIP
+              - ftpport
+              - ftptype
+              - backupPath
+              - nodetype
+              - periods
       responses:
         '200':
           description: 操作成功
@@ -49805,6 +51971,14 @@ paths:
                 userName:
                   type: string
                   description: 测试账号，可选。
+              required:
+              - password
+              - sendMail
+              - smtpAddress
+              - smtpAuth
+              - smtpPort
+              - sslAuth
+              - testEmailAddr
       responses:
         '200':
           description: 操作成功
@@ -49921,6 +52095,14 @@ paths:
                 count:
                   type: integer
                   description: 发送的最大条数。
+              required:
+              - password
+              - sendMail
+              - smtpAddress
+              - smtpAuth
+              - smtpPort
+              - sslAuth
+              - testEmailAddr
       responses:
         '200':
           description: 操作成功
@@ -50232,16 +52414,47 @@ paths:
                   value:
                     errorCode: '10100123'
                     message: 密码必须包含数字和大小写英文字母
-  ? '/json; charset=UTF-8 Accept: application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { " site_id
-    " :String, " language " :String }'
+  ? '/{site_uri}/{site_id}/snmp/{id}HTTP/1.1 Host: https:/{ip}:{port} Content-Type: application/json; charset=UTF-8 Accept:
+    application/json;version={version}; charset=UTF-8 X-Auth-Token: {Authen_TOKEN} { " site_id " :String, " language " :String
+    }'
   : get:
       tags:
       - SNMP
       summary: 查询指定SNMP配置
-      operationId: getJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenSite_idStringLanguageString
+      operationId: getSite_uriSite_idSnmpIdHttpHostHttpsIpPortContentTypeApplicationJsonCharsetUtfAcceptApplicationJsonVersionVersionCharsetUtfXAuthTokenAuthen_tokenSite_idStringLanguageString
       security:
       - X-Auth-Token: []
       parameters:
+      - name: site_uri
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_uri
+      - name: site_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 site_id
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 id
+      - name: ip
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 ip
+      - name: port
+        in: path
+        required: true
+        schema:
+          type: string
+        description: 路径参数 port
       - name: version
         in: path
         required: true
@@ -50656,6 +52869,8 @@ paths:
                 volumeUrn:
                   type: string
                   description: 必选。目的卷标识
+              required:
+              - volumeUrn
       responses:
         '200':
           description: 操作成功
@@ -50749,6 +52964,9 @@ paths:
                   type: string
                   description: 位图信息，长度大小为roundup(bitNum/4)，其中每个字节中低位表示序号小的block，高位表示序号大的block；需要获取差量位图详细信息时返回。BitMap信息需要进行转换。
                     例如：字符串信息为“C1F2”，其对应的位图信息为“1100 0001 1111 0010”，其从左至右的bit位分别对序号从低到高block的有效性，具体表示为：start_block对应bit位为1，(start_block+1)对应bit位为1，(start_block+2)对应bit位为0，(start_block+3)对应bit位为0，以此类推。
+              required:
+              - type
+              - volCBTCreateTime
       responses:
         '200':
           description: 操作成功
@@ -50838,6 +53056,8 @@ paths:
                 taskUri:
                   type: string
                   description: 备份资源URI地址。
+              required:
+              - snapUrn2
       responses:
         '200':
           description: 操作成功
@@ -51725,6 +53945,8 @@ paths:
                 无响应正文:
                   type: string
                   description: 无响应正文
+              required:
+              - nvRAM
       responses:
         '200':
           description: 操作成功
@@ -51812,6 +54034,12 @@ paths:
                 taskUri:
                   type: string
                   description: 任务对应的URI地址
+              required:
+              - vmUuid
+              - clientMgmtIp
+              - clientDataIp
+              - clientPort
+              - volumeUuids
       responses:
         '200':
           description: 操作成功
@@ -51852,6 +54080,8 @@ paths:
                 taskUri string 任务对应的URI地址:
                   type: string
                   description: taskUri string 任务对应的URI地址
+              required:
+              - vmUuid
       responses:
         '200':
           description: 操作成功
@@ -51896,6 +54126,9 @@ paths:
                 taskUri:
                   type: string
                   description: 任务对应的URI地址
+              required:
+              - vmUuid
+              - volumeUuids
       responses:
         '200':
           description: 操作成功
@@ -52070,6 +54303,9 @@ paths:
                 taskUri:
                   type: string
                   description: 任务对应的URI地址
+              required:
+              - vmUuid
+              - volumeUuids
       responses:
         '200':
           description: 操作成功
@@ -52250,6 +54486,8 @@ paths:
                 iops:
                   type: string
                   description: 虚拟机每秒写IO
+              required:
+              - vmUuid
       responses:
         '200':
           description: 操作成功
@@ -52332,6 +54570,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - vmUuid
       responses:
         '200':
           description: 操作成功
@@ -52378,6 +54618,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - vmUuid
       responses:
         '200':
           description: 操作成功
@@ -52462,6 +54704,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - vmUuid
       responses:
         '200':
           description: 操作成功
@@ -52611,6 +54855,8 @@ paths:
                 taskUri:
                   type: string
                   description: 任务uri
+              required:
+              - vmUuid
       responses:
         '200':
           description: 操作成功
@@ -52761,6 +55007,8 @@ paths:
                 extend_content:
                   type: string
                   description: 事件扩展信息，参考10.2 事件类型及响应定义。
+              required:
+              - eventtype
       responses:
         '200':
           description: 操作成功
@@ -52814,6 +55062,9 @@ paths:
                 extend_content:
                   type: string
                   description: 事件扩展信息，参考10.2 事件类型及响应定义。
+              required:
+              - eventtype
+              - clienttype
       responses:
         '200':
           description: 操作成功
